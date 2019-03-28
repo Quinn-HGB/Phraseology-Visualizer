@@ -89,8 +89,8 @@ function appendPre(message) {
     await gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: '1LKwvzwSWb3RjrjK6vG15Iyalv4ORzXdHrGSNm1Cipr4',
         range: 'Metrics!A2:J',
-    }).then((responce) => {responce.result.values.forEach(hour => {
-          cycle1.hours.push(new Hour(hour))
+    }).then((responce) => {responce.result.values.forEach(cycle => {
+          cycle1.cycles.push(new Cycle(cycle))
     });         
     }, (responce) => { // ERROR
         console.log("Error: " + responce.result.error.message)
@@ -101,33 +101,33 @@ function appendPre(message) {
 
 
 
-class Hour {
-    constructor(hour) {
-        this.name = hour[0]
-        this.date = hour[1]
-        this.read = hour[3] 
-        this.norm =     hour[4]
-        this.correct =  hour[5]
-        this.suspense = hour[6]
-        this.easy =     hour[7]
-        this.med =      hour[8]
-        this.com =      hour[9]
+class Cycle {
+    constructor(cycle) {
+        this.name = cycle[0]
+        this.dateTime = new Date(cycle[1] + "T" + cycle[2] + ":00") 
+        this.read = cycle[3] 
+        this.norm =     cycle[4]
+        this.correct =  cycle[5]
+        this.suspense = cycle[6]
+        this.easy =     cycle[7]
+        this.med =      cycle[8]
+        this.com =      cycle[9]
     }
 }
 
 class Sheet {
     constructor(){
-        this.hours = []
+        this.cycles = []
     }
 
 
 
     log(){
-        console.log(this.hours);
+        console.log(this.cycles);
     }
 
 }
 
 var cycle1 = new Sheet()
 
-console.log(cycle1.hours)
+console.log(cycle1.cycles)
