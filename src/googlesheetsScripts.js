@@ -50,7 +50,7 @@ function updateSigninStatus(isSignedIn) {
     if (isSignedIn) {
         authorizeButton.style.display = 'none';
         signoutButton.style.display = 'block';
-        getData();
+        //getData();
         //listMajors();
     } else {
         authorizeButton.style.display = 'block';
@@ -84,74 +84,50 @@ function appendPre(message) {
     pre.appendChild(textContent);
 }
 
-/**
- * Print the names and majors of students in a sample spreadsheet:
- * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
- */
-function listMajors() {
-    gapi.client.sheets.spreadsheets.values.get({
-        spreadsheetId: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
-        range: 'Class Data!A2:E',
-    }).then(function(response) {
-        var range = response.result;
-        if (range.values.length > 0) {
-        appendPre('Name, Major:');
-        for (i = 0; i < range.values.length; i++) {
-            var row = range.values[i];
-            // Print columns A and E, which correspond to indices 0 and 4.
-            appendPre(row[0] + ', ' + row[4]);
-        }
-        } else {
-        appendPre('No data found.');
-        }
-    }, function(response) {
-        appendPre('Error: ' + response.result.error.message);
-    });
-}
-
-function getData() {
-    gapi.client.sheets.spreadsheets.values.get({
+ getData = async() => {
+    // var data = {}
+    await gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: '1LKwvzwSWb3RjrjK6vG15Iyalv4ORzXdHrGSNm1Cipr4',
-        range: 'Metrics!A2:J1000',
-    }).then((responce) => { //SUCCESS
-        var result = responce.result;
-        var data = {}
-
-        for (i = 0; i < result.values.length; i++) {
-            var row = result.values[i]
-            hour = {
-                "emailsRead" : row[3],
-                "emailsNormalized" : row[4],
-                "emailsCorrect" : row[5],
-                "sentToSuspense" : row[6],
-                "easy" : row[7],
-                "medium" : row[8],
-                "complex" : row[9]
-            }
-            if(!(data[row[1]])) {
-                data[row[1]] = {}
-            }
-            if (!(row[0] in data[row[1]])) {
-                data[row[1]][row[0]] = []
-            }
-            data[row[1]][row[0]].push(hour)
-        }
-        console.log(data)
-        for (var date in data) {
-            appendPre("[date]" + date + ": ")
-            for (var name in data[date]) {
-                appendPre("\t" + "[name]" + name + ": ")
-                for (var hour = 0; hour < data[date][name].length; hour++) {
-                    appendPre("\t\t" +  "[hour]" + hour)
-                    for(var field in data[date][name][hour]) {
-                        appendPre("\t\t\t" + "[field]" + field + " " + data[date][name][hour][field])
-                    }
-                }
-            }
-        }
-
-
+        range: 'Metrics!A2:J',
+    }).then((responce) => {responce.result.values.forEach(hour => {
+          cycle1.hours.push(new Hour(hour))
+    });         
     }, (responce) => { // ERROR
         console.log("Error: " + responce.result.error.message)
     });
+
+    cycle1.log()
 }
+
+
+
+class Hour {
+    constructor(hour) {
+        this.name = hour[0]
+        this.date = hour[1]
+        this.read = hour[3] 
+        this.norm =     hour[4]
+        this.correct =  hour[5]
+        this.suspense = hour[6]
+        this.easy =     hour[7]
+        this.med =      hour[8]
+        this.com =      hour[9]
+    }
+}
+
+class Sheet {
+    constructor(){
+        this.hours = []
+    }
+
+
+
+    log(){
+        console.log(this.hours);
+    }
+
+}
+
+var cycle1 = new Sheet()
+
+console.log(cycle1.hours)
