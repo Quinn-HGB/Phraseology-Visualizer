@@ -2,18 +2,12 @@
 <html>
     <head>
         <title> Testing for google sheets </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="src/script.js"></script>
     </head>
     <body>
         <!--Add stuff here-->
-        <button id="authorize_button" style="display: none;">Authorize</button>
-        <button id="signout_button" style="display: none;">Sign Out</button>
-        <button onclick="getData()">Get Data</button>
-        <pre id="content" style="white-space: pre-wrap;"></pre>
-        <script src="/src/googlesheetsScripts.js"></script>
-        <script src="/src/script.js"></script>
-        <script async defer src="https://apis.google.com/js/api.js"
-        onload="this.onload=function(){};handleClientLoad()"
-        onreadystatechange="if (this.readyState === 'complete') this.onload()">
-        </script>
+        <button id="data" style="display: block;">Get Data</button>
+
     </body>
 </html>
