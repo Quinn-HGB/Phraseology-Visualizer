@@ -12,12 +12,13 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
 const TOKEN_PATH = './token.json';
 
 sheetObj = new Sheet();
+var tokenContent = undefined;
 
 // Load client secrets from a local file.
 fs.readFile('./credentials.json', (err, content) => {
   if (err) return console.log('Error loading client secret file:', err);
   // Authorize a client with credentials, then call the Google Sheets API.
-  authorize(JSON.parse(content), this.getData);
+  authorize(JSON.parse(content), getData);
 });
 
 
@@ -31,11 +32,13 @@ function authorize(credentials, callback) {
   const {client_secret, client_id, redirect_uris} = credentials.installed;
   const oAuth2Client = new google.auth.OAuth2(
       client_id, client_secret, redirect_uris[0]);
+  
 
   // Check if we have previously stored a token.
   fs.readFile(TOKEN_PATH, (err, token) => {
     if (err) return getNewToken(oAuth2Client, callback);
     oAuth2Client.setCredentials(JSON.parse(token));
+    tokenContent = oAuth2Client;
     callback(oAuth2Client);
   });
 }
@@ -71,9 +74,9 @@ function getNewToken(oAuth2Client, callback) {
   });
 }
 
-exports.getData = function(auth) {
+async function getData(auth){
   const sheets = google.sheets({ version: "v4", auth });
-  sheets.spreadsheets.values.get(
+  await sheets.spreadsheets.values.get(
     {
       spreadsheetId: "1LKwvzwSWb3RjrjK6vG15Iyalv4ORzXdHrGSNm1Cipr4",
       range: "Metrics!A2:J"
@@ -81,16 +84,23 @@ exports.getData = function(auth) {
     (err, res) => {
       if (err) return console.log("The API returned an error: " + err);
       const data = res.data.values;
-      data.forEach(data => {
+      sheetObj.clear().then(()=>{
+        data.forEach(data => {
         sheetObj.cycles.push((cycleObj = new Cycle(data)));
+        });
+        main();
       });
-      main();
     }
   );
 };
 
-exports.sendData = function (req, res) {
-  return res.send(sheetObj);
+exports.sendData = async function (req, res) {
+
+  getData(tokenContent).then(()=>{
+    getData(tokenContent).then(()=>{
+      return res.send(sheetObj);
+    });
+  });
 };
 
 function main() {
