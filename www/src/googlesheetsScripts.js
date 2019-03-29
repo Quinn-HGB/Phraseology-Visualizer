@@ -85,6 +85,7 @@ function appendPre(message) {
 }
 
  getData = async() => {
+     cycle1 = new Sheet();
     // var data = {}
     await gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: '1LKwvzwSWb3RjrjK6vG15Iyalv4ORzXdHrGSNm1Cipr4',
@@ -104,15 +105,67 @@ function appendPre(message) {
 class Cycle {
     constructor(cycle) {
         this.name = cycle[0]
-        this.dateTime = new Date(cycle[1] + "T" + cycle[2] + ":00") 
+        this.date = new Date(cycle[1] + "T" + cycle[2] + ":00") 
         this.read = cycle[3] 
-        this.norm =     cycle[4]
-        this.correct =  cycle[5]
+        this.norm = cycle[4]
+        this.correct = cycle[5]
         this.suspense = cycle[6]
-        this.easy =     cycle[7]
-        this.med =      cycle[8]
-        this.com =      cycle[9]
+        this.easy = cycle[7]
+        this.med = cycle[8]
+        this.com = cycle[9]
     }
+}
+
+class Day extends Cycle{
+    constructor(cycles){
+        this.name = cycles[0].name;
+        this.date = getDate(cycles[0].dateTime);
+        this.read = cycles.map(cycle => cycle.read).reduce(getSum);
+        this.norm = cycles.map(cycle => cycle.norm).reduce(getSum);
+        this.correct = cycles.map(cycle => cycle.correct).reduce(getSum);
+        this.suspense = cycles.map(cycle => cycle.suspense).reduce(getSum);
+        this.easy = cycles.map(cycle => cycle.easy).reduce(getSum);
+        this.med = cycles.map(cycle => cycle.med).reduce(getSum);
+        this.com = cycles.map(cycle => cycle.com).reduce(getSum);
+    }
+}
+
+class Person{
+    constructor(cycles=[])
+}
+
+function getSum(total, num){
+    //console.log(total, num);
+    return Number(total)+Number(num);
+}
+
+function getDate(date=new Date()){
+    return date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
+}
+
+function convertCyclesToDays(cycles = []){
+    let days = [];
+    let names = [];
+    cycles.forEach(cycle=>{
+        if(!names.includes(cycle.name)){
+            names.push(cycle.name);
+        }
+    });
+    for(let name of names){
+        var namedCycles = cycles.filter(cycle=>cycle.name===name)
+        let dates = [];
+        namedCycles.forEach(cycle=>{
+            if(!dates.includes(getDate(cycle.dateTime))){
+                dates.push(getDate(cycle.dateTime));
+            }
+        });
+        //console.log(dates);
+        for(let date of dates){
+            var dateCycles = namedCycles.filter(cycle=>getDate(cycle.dateTime)===date);
+            days.push(new Day(dateCycles));
+        }
+    }
+    return days;
 }
 
 class Sheet {
@@ -124,6 +177,7 @@ class Sheet {
 
     log(){
         console.log(this.cycles);
+        console.log(convertCyclesToDays(this.cycles));
     }
 
 }
