@@ -96,17 +96,15 @@ async function getData(auth){
 
 exports.sendData = async function (req, res) {
 
-  getData(tokenContent).then(()=>{
     getData(tokenContent).then(()=>{
-      return res.send(sheetObj);
+      return res.status(200).json(sheetObj);
     });
-  });
 };
 
 function main() {
   // Do stuff
-  console.log("Ready to go");
-  console.log(sheetObj);
+  // console.log("Ready to go");
+  // console.log(sheetObj);
   
 }
 
