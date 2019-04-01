@@ -20,26 +20,26 @@ class Day{
   constructor(cycles){
       this.name = cycles[0].name;
       this.date = getDate(cycles[0].dateTime);
-      this.read = cycles.map(cycle => cycle.read).reduce(getSum);
-      this.norm = cycles.map(cycle => cycle.norm).reduce(getSum);
-      this.correct = cycles.map(cycle => cycle.correct).reduce(getSum);
-      this.suspense = cycles.map(cycle => cycle.suspense).reduce(getSum);
-      this.easy = cycles.map(cycle => cycle.easy).reduce(getSum);
-      this.med = cycles.map(cycle => cycle.med).reduce(getSum);
-      this.com = cycles.map(cycle => cycle.com).reduce(getSum);
+      this.read = cycles.map(cycle => cycle.read).reduce(getSum).toString();
+      this.norm = cycles.map(cycle => cycle.norm).reduce(getSum).toString();
+      this.correct = cycles.map(cycle => cycle.correct).reduce(getSum).toString();
+      this.suspense = cycles.map(cycle => cycle.suspense).reduce(getSum).toString();
+      this.easy = cycles.map(cycle => cycle.easy).reduce(getSum).toString();
+      this.med = cycles.map(cycle => cycle.med).reduce(getSum).toString();
+      this.com = cycles.map(cycle => cycle.com).reduce(getSum).toString();
   }
 }
 function drawGraph() {
-  d3.json(sheetData.cycles, function(error, data) {
-    if (error) throw error;
 
+    var data = sheetData.cycles;
+    //console.log(data);
     var dataGroup = d3.nest()
         .key(function(d) {
             return d.name;
         })
         .entries(data);
 
-    var vis = d3.select("#visualisation"),
+    var vis = d3.select("#visualization"),
     w = window,
     d = document,
     e = d.documentElement,
@@ -135,5 +135,4 @@ function drawGraph() {
             .attr("cy", ((lSpace / 2) + i * lSpace) - 5)
             .attr("r", 7);
     });
-  });
 }
