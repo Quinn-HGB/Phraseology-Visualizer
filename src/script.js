@@ -2,11 +2,9 @@
 var sheetData = undefined;
 
 $(document).ready(function() {
-  $("#data").click(function() {
-    $.get("http://localhost:8000/api/getdata", function(data, err){
-      sheetData = data;
-      return console.log(data);
-    });
+    getData();
+  $("#data").click(function(){
+      getData();
   });
   $("#test").click(function(){
     console.log(sheetData);
@@ -29,8 +27,15 @@ class Day{
       this.com = cycles.map(cycle => cycle.com).reduce(getSum).toString();
   }
 }
-function drawGraph() {
 
+function getData(){
+    $.get("http://localhost:8000/api/getdata", function(data, err){
+      sheetData = data;
+      return console.log(data);
+    });
+}
+
+function drawGraph() {
     var data = sheetData.cycles;
     //console.log(data);
     var dataGroup = d3.nest()
@@ -38,7 +43,7 @@ function drawGraph() {
             return d.name;
         })
         .entries(data);
-
+    console.log(dataGroup);
     var vis = d3.select("#visualization"),
     w = window,
     d = document,
@@ -48,19 +53,16 @@ function drawGraph() {
     HEIGHT = w.innerHeight|| e.clientHeight|| g.clientHeight,
     MARGINS = {
         top: 50,
-        right: 70,
         bottom: 40,
         left: 60
     },
-    xScale = d3.scaleLinear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([d3.min(data, function(d) {
-        return d.date;
-    }), d3.max(data, function(d) {
-        return d.date;
+    xScale = d3.scaleLinear().range([MARGINS.left, WIDTH]).domain([d3.min(dataGroup, function(d,i) {
+        return 0;
+    }), d3.max(data, function(d,i) {
+        return dataGroup[2].values.length;
     })]),
-    yScale = d3.scaleLinear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([d3.min(data, function(d) {
-        return d.norm;
-    }), d3.max(data, function(d) {
-        return d.norm;
+    yScale = d3.scaleLinear().range([HEIGHT - MARGINS.top, 0]).domain([0, d3.max(data, function(d) {
+        return d.easyTime;
     })]),
     xAxis = d3.axisBottom()
         .scale(xScale),
@@ -96,18 +98,21 @@ function drawGraph() {
         .text("Emails Normalized");
 
     var lineGen = d3.line()
-        .x(function(d) {
-        return xScale(d.date);
+        .x(function(d, i) {
+            //console.log(xScale(d.date));
+        return xScale(i);
         })
         .y(function(d) {
-        return yScale(d.norm);
+            //console.log(yScale(d.norm));
+        return yScale(d.easyTime);
         })
-        .curve(d3.curveCardinal);
+        .curve(d3.curveMonotoneX);
 
     var colors = new Array("hsl(0, 100%, 50%", "hsl(40, 100%, 50%)", "hsl(120, 100%, 50%)",
     "hsl(180, 100%, 50%)", "hsl(240, 100%, 50%)", "hsl(300, 100%, 50%)");
     dataGroup.forEach(function(d, i) {
         var colored = colors[i];
+        //console.log(d);
         vis.append('svg:path')
             .attr('d', lineGen(d.values))
             .attr('stroke', colored)
