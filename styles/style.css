@@ -1,6 +1,11 @@
 #controls {
   width: 100%;
   position: relative;
-  margin-left: 0px;
+  margin-left: 10px;
   margin-bottom: 50px;
+  margin-top: 10px;
+}
+#plot{
+  width: 90vw;
+  height: 80vh;
 }

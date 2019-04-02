@@ -33,13 +33,13 @@ class Day{
   constructor(cycles){
       this.date = new Date(cycles[0].date);
       this.time = this.date.getTime();
-      this.read = cycles.map(cycle => cycle.read).reduce(getSum).toString();
-      this.norm = cycles.map(cycle => cycle.norm).reduce(getSum).toString();
-      this.correct = cycles.map(cycle => cycle.correct).reduce(getSum).toString();
-      this.suspense = cycles.map(cycle => cycle.suspense).reduce(getSum).toString();
-      this.easy = cycles.map(cycle => cycle.easy).reduce(getSum).toString();
-      this.med = cycles.map(cycle => cycle.med).reduce(getSum).toString();
-      this.com = cycles.map(cycle => cycle.com).reduce(getSum).toString();
+      this.read = cycles.map(cycle => cycle.read).reduce(getSum);
+      this.norm = cycles.map(cycle => cycle.norm).reduce(getSum);
+      this.correct = cycles.map(cycle => cycle.correct).reduce(getSum);
+      this.suspense = cycles.map(cycle => cycle.suspense).reduce(getSum);
+      this.easy = cycles.map(cycle => cycle.easy).reduce(getSum);
+      this.med = cycles.map(cycle => cycle.med).reduce(getSum);
+      this.com = cycles.map(cycle => cycle.com).reduce(getSum);
   }
 }
 
@@ -62,6 +62,7 @@ function restructureData(data, key){
             values: dataGroup.map(o=>new Day(o.values))
         }]
     }
+    console.log(dataGroup)
     return dataGroup;
 }
 
@@ -95,14 +96,15 @@ function drawGraph(data, key, xVar, yVar) {
     d = document,
     e = d.documentElement,
     g = d.getElementsByTagName('body')[0],
-    WIDTH = (1600 || e.clientWidth || g.clientWidth)*(9/10),
-    HEIGHT = 1100 || e.clientHeight|| g.clientHeight,
+    plot = d3.select("#plot")
+    console.log(plot);
+    WIDTH = (plot.clientWidth || e.clientWidth || w.innerWidth || g.clientWidth)*(8/10),
+    HEIGHT =(plot.clientHeight || e.clientHeight || w.innerHeight || g.clientHeight)*(8/10),
     MARGINS = {
         top: 50,
-        right: 60,
+        right: 100,
         bottom: 40,
         left: 60,
-        right: 60,
     },
     xScale = xVar==="date" ? d3.scaleTime().range([MARGINS.left, WIDTH-MARGINS.right]).domain([d3.min(data, function(d){
         return d.time;
@@ -113,9 +115,9 @@ function drawGraph(data, key, xVar, yVar) {
     }), d3.max(dataGroup, function(d,i) {
         return d.values.length;
     })]),
-    yScale = key!=="date" ? d3.scaleLinear().range([HEIGHT - MARGINS.top, 10]).domain([d3.min(data,function(d){
+    yScale = key!=="date" ? d3.scaleLinear().range([HEIGHT - MARGINS.top, 10]).domain([d3.max([0,d3.min(data,function(d){
         return d[yVar];
-    }), d3.max(data, function(d) {
+    })-10]), d3.max(data, function(d) {
         return d[yVar];
     })]) : d3.scaleLinear().range([HEIGHT-MARGINS.top,10]).domain([d3.min(dataGroup[0].values,function(d){
         return d[yVar]

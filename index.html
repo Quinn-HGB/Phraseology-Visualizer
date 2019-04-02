@@ -12,12 +12,10 @@
     </head>
     <body>
         <!--Add stuff here-->
-        <button id="data" style="display: block;">Get Data</button>
-        <button id="test" style="display: block;">TEST</button>
         <div class="row" id="controls">
-            <select id="group" name="group">
+            <select id="group" name="group"> 
+                <option value="name">Individual</option>
                 <option value="date">Aggregate</option>
-                <option value="name" disabled="true">Individual</option>
             </select>
             <select id="x-axis" name="x-axis">
                 <option value="date">Date</option>
@@ -34,8 +32,8 @@
             </select>
             <button id="graph" style="display: block;">Draw</button>
         </div>
-        <div class="container-fluid">
-            <svg id="visualization" width="1600" height="1100"></svg>
+        <div class="container-fluid" id="plot">
+            <svg id="visualization" width="100%" height="100%"></svg>
         </div>
     </body>
 </html>
