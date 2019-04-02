@@ -1,41 +1,44 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title> Testing for google sheets </title>
-        <script src="http://d3js.org/d3.v4.js" charset="utf-8"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="src/script.js"></script>        
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="/styles/style.css">
-
-
-    </head>
-    <body>
-        <!--Add stuff here-->
-        <button id="data" style="display: block;">Get Data</button>
-        <button id="test" style="display: block;">TEST</button>
-        <div class="row" id="controls">
-            <select id="group" name="group">
-                <option value="date">Aggregate</option>
-                <option value="name" disabled="true">Individual</option>
-            </select>
-            <select id="x-axis" name="x-axis">
-                <option value="date">Date</option>
-                <option value="cycles">Cycle</option>
-            </select>
-            <select id="y-axis" name="y-axis">
-                <option value="norm">Normalized</option>
-                <option value="read">Read</option>
-                <option value="easy">Easy</option>
-                <option value="med">Medium</option>
-                <option value="com">Complex</option>
-                <option value="suspense">Suspense</option>
-                <option value="correct">Correct</option>  
-            </select>
-            <button id="graph" style="display: block;">Draw</button>
-        </div>
-        <div class="container-fluid">
-            <svg id="visualization" width="1600" height="1100"></svg>
-        </div>
-    </body>
+  <head>
+    <title>Testing for google sheets</title>
+    <script src="http://d3js.org/d3.v4.js" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="src/script.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" href="/styles/style.css" />
+  </head>
+  <body>
+    <!--Add stuff here-->
+    <button id="data" style="display: block;">Get Data</button>
+    <button id="test" style="display: block;">TEST</button>
+    <div class="row" id="controls">
+      <select id="group" name="group">
+        <option value="date">Aggregate</option>
+        <option value="name" disabled="true">Individual</option>
+      </select>
+      <select id="x-axis" name="x-axis">
+        <option value="date">Date</option>
+        <option value="cycles">Cycle</option>
+      </select>
+      <select id="y-axis" name="y-axis">
+        <option value="norm">Normalized</option>
+        <option value="read">Read</option>
+        <option value="easy">Easy</option>
+        <option value="med">Medium</option>
+        <option value="com">Complex</option>
+        <option value="suspense">Suspense</option>
+        <option value="correct">Correct</option>
+      </select>
+      <button id="graph" style="display: block;">Draw</button>
+    </div>
+    <div class="container-fluid">
+      <svg id="visualization" width="1600" height="1100"></svg>
+    </div>
+  </body>
 </html>
