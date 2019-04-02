@@ -12,6 +12,8 @@ $(document).ready(function() {
   });
   $("#test").click(function(){
     convertCyclesToDays(sheetData.cycles);
+    d3.selectAll("svg > *").remove();
+    drawGraph(sheetData.cycles,"name","date","read");
   });
   $("#graph").click(function(){
     d3.selectAll("svg > *").remove();
@@ -165,6 +167,7 @@ function drawGraph(data, key, xVar, yVar) {
             .style("fill", colored)
             .attr('id', 'value_'+d.key)
             .attr("r", 5)
+            .attr('id', 'value_' +d.key)
             .attr("cx", function(d, i) { return xScale(i); })
             .attr("cy", function(d) { return yScale(d[yVar]); });
             //console.log(xScale(i));
@@ -182,6 +185,8 @@ function drawGraph(data, key, xVar, yVar) {
                 d3.select("#line_" + d.key).style("opacity", opacity);
             
                 d.active = active;
+                d3.selectAll("#value_" + d.key).style("opacity", opacity);
+                
             });
         var circle = vis.append("circle")
             .style("fill", colored)
