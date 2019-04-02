@@ -12,9 +12,9 @@ module.exports = class Cycle {
     this.com = Number(cycle[9]);
     this.easyTime = Number(cycle[10]);
   }
-
-  dayMonth(cycle) {
-    var date = new Date(cycle[1] + "T" + "00:00:00");
+  
+  dayMonth(cycle){
+    var date = new Date(cycle[1] + "T" + "12:00:00");
     return date;
   }
   unix(cycle) {
