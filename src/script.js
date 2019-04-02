@@ -9,15 +9,28 @@ $(document).ready(function() {
   $("#test").click(function(){
     console.log(sheetData);
   });
-  $("#graph").click(function(){
+  $("#Read").click(function(){
+    d3.selectAll("svg > *").remove();
     drawGraph(sheetData.cycles,"name","date","read");
-    console.log(restructureData(sheetData.cycles,"date"))
   });
-  $("#graph2").click(function(){
+  $("#Norm").click(function(){
+    d3.selectAll("svg > *").remove();
     drawGraph(sheetData.cycles,"name","date","norm");
-    console.log(restructureData(sheetData.cycles,"date"))
-  });
+  });  
+  $("#Correct").click(function(){
+    d3.selectAll("svg > *").remove();
+    drawGraph(sheetData.cycles,"name","date","correct")});
+  $("#Easy").click(function(){
+    d3.selectAll("svg > *").remove();
+    drawGraph(sheetData.cycles,"name","date","easy")});  
+  $("#Med").click(function(){
+    d3.selectAll("svg > *").remove();
+    drawGraph(sheetData.cycles,"name","date","med")});
+  $("#Com").click(function(){
+    d3.selectAll("svg > *").remove();
+    drawGraph(sheetData.cycles,"name","date","com")});   
 });
+  
 
 class Day{
   constructor(cycles){
@@ -87,7 +100,7 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
     }), d3.max(data, function(d,i) {
         return dataGroup[2].values.length;
     })]),
-    yScale = d3.scaleLinear().range([HEIGHT - MARGINS.top, 0]).domain([0, d3.max(data, function(d) {
+    yScale = d3.scaleLinear().range([HEIGHT - MARGINS.top, 10]).domain([0, d3.max(data, function(d) {
         return d[yVar];
     })]),
     xAxis = d3.axisBottom()
