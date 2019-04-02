@@ -4,13 +4,27 @@
         <title> Testing for google sheets </title>
         <script src="http://d3js.org/d3.v4.js" charset="utf-8"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="src/script.js"></script>
+        <script src="src/script.js"></script>        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="/styles/style.css">
+
+
     </head>
     <body>
         <!--Add stuff here-->
-        <button id="data" style="display: block;">Get Data</button>
-        <button id="test" style="display: block;">TEST</button>
-        <button id="graph" style="display: block;">Draw</button>
+        <!-- <button id="data" style="display: flex;">Get Data</button>
+        <button id="test" style="display: flex;">TEST</button> -->
+        <div class="container" id="controls">
+        <p>Display Stat:</p>
+        <div class="row">
+        <button id="Read" style="display: flex;">Read</button>
+        <button id="Norm" style="display: flex;">Norm</button>
+        <button id="Correct" style="display: flex;">Correct</button>
+        <button id="Easy" style="display: flex;">Easy</button>
+        <button id="Med" style="display: flex;">Med</button>
+        <button id="Com" style="display: flex;">Com</button>
+            </div> 
+        </div>
         <div class="container">
             <svg id="visualization" width="2000" height="1100"></svg>
         </div>
