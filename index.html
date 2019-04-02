@@ -12,19 +12,28 @@
     </head>
     <body>
         <!--Add stuff here-->
-        <!-- <button id="data" style="display: flex;">Get Data</button>
-        <button id="test" style="display: flex;">TEST</button> -->
-        <div class="container" id="controls">
-        <p>Display Stat:</p>
-        <div class="row">
-        <button id="Read" style="display: flex;">Read</button>
-        <button id="Norm" style="display: flex;">Norm</button>
-        <button id="Correct" style="display: flex;">Correct</button>
-        <button id="Easy" style="display: flex;">Easy</button>
-        <button id="Med" style="display: flex;">Med</button>
-        <button id="Com" style="display: flex;">Com</button>
-            </div> 
-        </div>
+        <button id="data" style="display: block;">Get Data</button>
+        <button id="test" style="display: block;">TEST</button>
+        <button id="graph" style="display: block;">Draw</button>
+        <form class="form-inline">
+            <select id="group" name="group">
+                <option value="Aggregate">Aggregate</option>
+                <option value="Individual">Individual</option>
+            </select>
+            <select id="x-axis" name="x-axis">
+                <option value="date">Date</option>
+                <option value="cycles">Cycle</option>
+            </select>
+            <select id="y-axis" name="y-axis">
+                <option value="norm">Normalized</option>
+                <option value="read">Read</option>
+                <option value="easy">Easy</option>
+                <option value="med">Medium</option>
+                <option value="com">Complex</option>
+                <option value="suspense">Suspense</option>
+                <option value="correct">Correct</option>
+            </select>
+        </form>
         <div class="container">
             <svg id="visualization" width="2000" height="1100"></svg>
         </div>
