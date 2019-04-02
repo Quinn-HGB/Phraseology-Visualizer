@@ -11,6 +11,8 @@ module.exports = class Cycle {
     this.med = Number(cycle[8]);
     this.com = Number(cycle[9]);
     this.easyTime = Number(cycle[10]);
+    this.medTime = Number(cycle[11]);
+    this.comTime = Number(cycle[12]);
   }
   
   dayMonth(cycle){

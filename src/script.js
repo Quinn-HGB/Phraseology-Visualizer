@@ -39,6 +39,9 @@ class Day {
     this.easy = cycles.map(cycle => cycle.easy).reduce(getSum);
     this.med = cycles.map(cycle => cycle.med).reduce(getSum);
     this.com = cycles.map(cycle => cycle.com).reduce(getSum);
+    this.easyTime = cycles.map(cycle => cycle.easyTime).reduce(getSum)/cycles.length;
+    this.medTime = cycles.map(cycle => cycle.medTime).reduce(getSum)/cycles.length;
+    this.comTime = cycles.map(cycle => cycle.comTime).reduce(getSum)/cycles.length;
   }
 }
 
@@ -75,6 +78,9 @@ function getTitle(label) {
     case "easy": return "Easy Emails Normalized";
     case "med": return "Medium Emails Normalized";
     case "com": return "Complex Emails Normalized";
+    case "easyTime": return "Average Time Easy Emails Normalized";
+    case "medTime": return "Average Time Medium Emails Normalized";
+    case "comTime": return "Average Time Complex Emails Normalized";
     case "suspense": return "Emails Suspensed";
     case "correct": return "Emails Correct";
     default: return "ERR: INCORRECT VAR GIVEN";

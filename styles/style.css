@@ -1,9 +1,9 @@
 #controls {
   width: 100%;
   position: relative;
-  margin-left: 10px;
-  margin-bottom: 50px;
-  margin-top: 10px;
+  padding-left: 20px;
+  padding-bottom: 50px;
+  padding-top: 10px;
 }
 #plot{
   width: 90vw;
