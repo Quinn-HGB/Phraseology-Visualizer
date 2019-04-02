@@ -1,5 +1,9 @@
 
 var sheetData = undefined;
+var groupGlobal = undefined;
+var xGlobal = undefined;
+var yGlobal = undefined;
+
 
 $(document).ready(function() {
     getData();
@@ -11,28 +15,19 @@ $(document).ready(function() {
     d3.selectAll("svg > *").remove();
     drawGraph(sheetData.cycles,"name","date","read");
   });
-  $("#Read").click(function(){
+  $("#graph").click(function(){
     d3.selectAll("svg > *").remove();
-    drawGraph(sheetData.cycles,"name","date","read");
+    var groupForm = document.getElementById("group");
+    var xForm = document.getElementById("x-axis");
+    var yForm = document.getElementById("y-axis");
+    var groupValue = groupForm.options[groupForm.selectedIndex].value;
+    var xValue = xForm.options[xForm.selectedIndex].value;
+    var yValue = yForm.options[yForm.selectedIndex].value;
+    drawGraph(sheetData.cycles, groupValue, xValue, yValue);
   });
-  $("#Norm").click(function(){
-    d3.selectAll("svg > *").remove();
-    drawGraph(sheetData.cycles,"name","date","norm");
-  });  
-  $("#Correct").click(function(){
-    d3.selectAll("svg > *").remove();
-    drawGraph(sheetData.cycles,"name","date","correct")});
-  $("#Easy").click(function(){
-    d3.selectAll("svg > *").remove();
-    drawGraph(sheetData.cycles,"name","date","easy")});  
-  $("#Med").click(function(){
-    d3.selectAll("svg > *").remove();
-    drawGraph(sheetData.cycles,"name","date","med")});
-  $("#Com").click(function(){
-    d3.selectAll("svg > *").remove();
-    drawGraph(sheetData.cycles,"name","date","com")});   
+
 });
-  
+
 
 class Day{
   constructor(cycles){
@@ -91,7 +86,7 @@ function getData(){
     });
 }
 
-function drawGraph(data,key="name",xVar="date", yVar="norm") {
+function drawGraph(data, key, xVar, yVar) {
     var dataGroup = restructureData(data,key);
     var xTitle = getTitle(xVar);
     var yTitle = getTitle(yVar);
@@ -100,13 +95,14 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
     d = document,
     e = d.documentElement,
     g = d.getElementsByTagName('body')[0],
-    WIDTH = (w.innerWidth || e.clientWidth || g.clientWidth)*(9/10),
-    HEIGHT = w.innerHeight|| e.clientHeight|| g.clientHeight,
+    WIDTH = (1600 || e.clientWidth || g.clientWidth)*(9/10),
+    HEIGHT = 1100 || e.clientHeight|| g.clientHeight,
     MARGINS = {
         top: 50,
         right: 60,
         bottom: 40,
-        left: 60
+        left: 60,
+        right: 60,
     },
     xScale = xVar==="date" ? d3.scaleTime().range([MARGINS.left, WIDTH-MARGINS.right]).domain([d3.min(data, function(d){
         return d.time;
