@@ -10,7 +10,12 @@ $(document).ready(function() {
     console.log(sheetData);
   });
   $("#graph").click(function(){
-    drawGraph();
+    drawGraph(sheetData.cycles,"name","date","read");
+    console.log(restructureData(sheetData.cycles,"date"))
+  });
+  $("#graph2").click(function(){
+    drawGraph(sheetData.cycles,"name","date","norm");
+    console.log(restructureData(sheetData.cycles,"date"))
   });
 });
 
@@ -28,6 +33,30 @@ class Day{
   }
 }
 
+function restructureData(data, key){
+    var dataGroup = d3.nest()
+        .key(function(d) {
+            return d[key];
+        })
+        .entries(data);
+    return dataGroup;
+}
+
+function getTitle(label){
+    switch(label){
+        case "date": return "Date";
+        case "cycles": return "Cycle";
+        case "read": return "Emails Read";
+        case "norm": return "Emails Normalized";
+        case "easy": return "Easy Emails Normalized";
+        case "med": return "Medium Emails Normalized";
+        case "com": return "Complex Emails Normalized";
+        case "suspense": return "Emails Suspensed";
+        case "correct": return "Emails Correct";
+        default: return "ERR: INCORRECT VAR GIVEN";
+    }
+}
+
 function getData(){
     $.get("http://localhost:8000/api/getdata", function(data, err){
       sheetData = data;
@@ -35,14 +64,11 @@ function getData(){
     });
 }
 
-function drawGraph() {
-    var data = sheetData.cycles;
+function drawGraph(data,key="name",xVar="date", yVar="norm") {
+    var dataGroup = restructureData(data,key);
+    var xTitle = getTitle(xVar);
+    var yTitle = getTitle(yVar);
     //console.log(data);
-    var dataGroup = d3.nest()
-        .key(function(d) {
-            return d.name;
-        })
-        .entries(data);
     console.log(dataGroup);
     var vis = d3.select("#visualization"),
     w = window,
@@ -62,7 +88,7 @@ function drawGraph() {
         return dataGroup[2].values.length;
     })]),
     yScale = d3.scaleLinear().range([HEIGHT - MARGINS.top, 0]).domain([0, d3.max(data, function(d) {
-        return d.easyTime;
+        return d[yVar];
     })]),
     xAxis = d3.axisBottom()
         .scale(xScale),
@@ -86,7 +112,7 @@ function drawGraph() {
             (HEIGHT + MARGINS.top - 50) + ")")
         .style("text-anchor", "middle")
         .style("font-weight", "bold")
-        .text("Date");
+        .text(xTitle);
 
     vis.append("text")
         .attr("transform", "rotate(-90)")
@@ -95,7 +121,7 @@ function drawGraph() {
         .attr("dy", "1em")
         .style("text-anchor", "middle")
         .style("font-weight", "bold")
-        .text("Emails Normalized");
+        .text(yTitle);
 
     var lineGen = d3.line()
         .x(function(d, i) {
@@ -104,7 +130,7 @@ function drawGraph() {
         })
         .y(function(d) {
             //console.log(yScale(d.norm));
-        return yScale(d.easyTime);
+        return yScale(d[yVar]);
         })
         .curve(d3.curveMonotoneX);
 
