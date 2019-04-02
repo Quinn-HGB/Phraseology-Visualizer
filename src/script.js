@@ -96,9 +96,9 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
     w = window,
     d = document,
     e = d.documentElement,
-    g = d.getElementsByTagName('body')[0],
-    WIDTH = (w.innerWidth || e.clientWidth || g.clientWidth)*(9/10),
-    HEIGHT = w.innerHeight|| e.clientHeight|| g.clientHeight,
+    g = d.getElementsByClassName('container')[0];
+    var WIDTH = g.offsetWidth;
+    var HEIGHT = g.offsetHeight,
     MARGINS = {
         top: 50,
         bottom: 40,
@@ -111,8 +111,8 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
     xScale = d3.scaleLinear().range([MARGINS.left, WIDTH]).domain([d3.min(dataGroup, function(d,i) {
         return 0;
     }), d3.max(data, function(d,i) {
-        console.log(d);
-        console.log(data)
+        //console.log(d);
+        //console.log(data);
         return dataGroup[2].values.length;
     })]),
     yScale = d3.scaleLinear().range([HEIGHT - MARGINS.top, 10]).domain([0, d3.max(data, function(d) {
@@ -123,6 +123,17 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
 
     yAxis = d3.axisLeft()
         .scale(yScale);
+
+    // vis.append("svg")
+    //     .call(d3.zoom().on("zoom", function () {
+    //         svg.attr("transform", d3.event.transform)
+    // }))
+    // .append("g");
+
+    // var zoom_handler = d3.zoom()
+    //     .on("zoom", zoom_actions);
+
+    // zoom_handler(d3.select("svg"));  
 
     vis.append("svg:g")
         .attr("class","axis")
@@ -137,7 +148,7 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
     vis.append("text")             
         .attr("transform",
             "translate(" + (WIDTH/2) + " ," + 
-            (HEIGHT + MARGINS.top - 50) + ")")
+            (HEIGHT - MARGINS.bottom + 30) + ")")
         .style("text-anchor", "middle")
         .style("font-weight", "bold")
         .text(xTitle);
@@ -184,7 +195,7 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
         lSpace = HEIGHT/dataGroup.length;
         vis.append("text")
             .attr("x", WIDTH - 40)
-            .attr("y", (lSpace / 2) + i * lSpace)
+            .attr("y", (lSpace / 2) + i * (lSpace/5))
             .style("fill", "black")
             .attr("class", "legend")
             .text(d.key)
@@ -201,7 +212,11 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
         var circle = vis.append("circle")
             .style("fill", colored)
             .attr("cx", WIDTH - 55)
-            .attr("cy", ((lSpace / 2) + i * lSpace) - 5)
+            .attr("cy", ((lSpace / 2) + (i * lSpace/5)) - 5)
             .attr("r", 7);
     });
+
+    // function zoom_actions(){
+    //     d3.select("svg").append("g").attr("transform", d3.event.transform)
+    // }
 }
