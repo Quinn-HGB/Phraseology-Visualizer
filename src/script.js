@@ -1,3 +1,5 @@
+// TODO: add tooltips to points
+
 var sheetData = undefined;
 var groupGlobal = undefined;
 var xGlobal = undefined;
@@ -102,16 +104,15 @@ function drawGraph(data, key, xVar, yVar) {
     d = document,
     e = d.documentElement,
     g = d.getElementsByTagName('body')[0],
-    plot = d3.select("#plot")
-  console.log(plot);
-  WIDTH = (plot.clientWidth || e.clientWidth || w.innerWidth || g.clientWidth) * (8 / 10),
-    HEIGHT = (plot.clientHeight || e.clientHeight || w.innerHeight || g.clientHeight) * (8 / 10),
+    plot = d3.select("#plot"),
     MARGINS = {
       top: 50,
       right: 100,
       bottom: 40,
       left: 60,
     },
+    WIDTH = (plot.clientWidth || e.clientWidth || w.innerWidth || g.clientWidth) * (8 / 10)-MARGINS.right-MARGINS.left,
+    HEIGHT = (plot.clientHeight || e.clientHeight || w.innerHeight || g.clientHeight) * (8 / 10)-MARGINS.top-MARGINS.bottom,
     xScale = xVar === "date" ? d3.scaleTime().range([MARGINS.left, WIDTH - MARGINS.right]).domain([d3.min(data, function (d) {
       return d.time;
     }), d3.max(data, function (d) {
