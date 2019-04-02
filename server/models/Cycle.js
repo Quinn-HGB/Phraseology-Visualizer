@@ -16,7 +16,7 @@ module.exports = class Cycle {
   }
   
   dayMonth(cycle){
-    var date = new Date(cycle[1] + "T" + "00:00:00");
+    var date = new Date(cycle[1] + "T" + "12:00:00");
     return date;
   }
   unix(cycle){

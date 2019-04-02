@@ -7,7 +7,10 @@ $(document).ready(function() {
       getData();
   });
   $("#test").click(function(){
-    convertCyclesToDays(sheetData.cycles);
+    //convertCyclesToDays(sheetData.cycles);
+    d3.selectAll("svg > *").remove();
+    drawGraph(sheetData.cycles,"date","date","read");
+    //[""0""].values[""0""].com
   });
   $("#Read").click(function(){
     d3.selectAll("svg > *").remove();
@@ -34,7 +37,8 @@ $(document).ready(function() {
 
 class Day{
   constructor(cycles){
-      this.date = cycles[0].date;
+      this.date = new Date(cycles[0].date);
+      this.time = this.date.getTime();
       this.read = cycles.map(cycle => cycle.read).reduce(getSum).toString();
       this.norm = cycles.map(cycle => cycle.norm).reduce(getSum).toString();
       this.correct = cycles.map(cycle => cycle.correct).reduce(getSum).toString();
@@ -50,7 +54,6 @@ function getSum(total, num){
 }
 function convertCyclesToDays(cycles){
     var test = restructureData(cycles,"date").map(o=>new Day(o.values));
-    console.log(test);
 }
 
 function restructureData(data, key){
@@ -59,6 +62,12 @@ function restructureData(data, key){
             return d[key];
         })
         .entries(data);
+    if(key==="date"){
+        dataGroup = [{
+            key: "Date",
+            values: dataGroup.map(o=>new Day(o.values))
+        }]
+    }
     return dataGroup;
 }
 
@@ -80,7 +89,6 @@ function getTitle(label){
 function getData(){
     $.get("http://localhost:8000/api/getdata", function(data, err){
       sheetData = data;
-      return console.log(data);
     });
 }
 
@@ -88,8 +96,6 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
     var dataGroup = restructureData(data,key);
     var xTitle = getTitle(xVar);
     var yTitle = getTitle(yVar);
-    //console.log(data);
-    console.log(dataGroup);
     var vis = d3.select("#visualization"),
     w = window,
     d = document,
@@ -99,18 +105,27 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
     HEIGHT = w.innerHeight|| e.clientHeight|| g.clientHeight,
     MARGINS = {
         top: 50,
+        right: 60,
         bottom: 40,
         left: 60
     },
-    xScale = d3.scaleLinear().range([MARGINS.left, WIDTH]).domain([d3.min(dataGroup, function(d,i) {
+    xScale = xVar==="date" ? d3.scaleTime().range([MARGINS.left, WIDTH-MARGINS.right]).domain([d3.min(data, function(d){
+        return d.time;
+    }), d3.max(data, function(d){
+        return d.time;
+    })]) : d3.scaleLinear().range([MARGINS.left, WIDTH-MARGINS.right]).domain([d3.min(data, function(d,i) {
         return 0;
-    }), d3.max(data, function(d,i) {
-        console.log(d);
-        console.log(data)
-        return dataGroup[2].values.length;
+    }), d3.max(dataGroup, function(d,i) {
+        return d.values.length;
     })]),
-    yScale = d3.scaleLinear().range([HEIGHT - MARGINS.top, 10]).domain([0, d3.max(data, function(d) {
+    yScale = key!=="date" ? d3.scaleLinear().range([HEIGHT - MARGINS.top, 10]).domain([d3.min(data,function(d){
         return d[yVar];
+    }), d3.max(data, function(d) {
+        return d[yVar];
+    })]) : d3.scaleLinear().range([HEIGHT-MARGINS.top,10]).domain([d3.min(dataGroup[0].values,function(d){
+        return d[yVar]
+    }), d3.max(dataGroup[0].values, function(d){
+        return d[yVar]
     })]),
     xAxis = d3.axisBottom()
         .scale(xScale),
@@ -147,12 +162,10 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
 
     var lineGen = d3.line()
         .x(function(d, i) {
-            //console.log(xScale(d.date));
-        return xScale(i);
+            return xVar==="date"?xScale(d.time):xScale(i);
         })
         .y(function(d) {
-            //console.log(yScale(d.norm));
-        return yScale(d[yVar]);
+            return yScale(d[yVar]);
         })
         .curve(d3.curveMonotoneX);
 
@@ -160,8 +173,6 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
     "hsl(180, 100%, 50%)", "hsl(240, 100%, 50%)", "hsl(300, 100%, 50%)");
     dataGroup.forEach(function(d, i) {
         var colored = colors[i];
-        //console.log(d);
-        //console.log(i);
         vis.append('svg:path')
             .attr('d', lineGen(d.values))
             .attr('stroke', colored)
@@ -174,9 +185,8 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
             .style("fill", colored)
             .attr('id', 'value_'+d.key)
             .attr("r", 5)
-            .attr("cx", function(d, i) { return xScale(i); })
+            .attr("cx", function(d, i) { return xVar==="date"?xScale(d.time):xScale(i); })
             .attr("cy", function(d) { return yScale(d[yVar]); });
-            //console.log(xScale(i));
         lSpace = HEIGHT/dataGroup.length;
         vis.append("text")
             .attr("x", WIDTH - 40)
