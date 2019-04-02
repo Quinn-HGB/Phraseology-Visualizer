@@ -98,17 +98,17 @@ function getData() {
 }
 
 function drawGraph(data, key, xVar, yVar) {
-  var dataGroup = restructureData(data, key);
-  var xTitle = getTitle(xVar);
-  var yTitle = getTitle(yVar);
-  var vis = d3.select("#visualization"),
+    var dataGroup = restructureData(data, key);
+    var xTitle = getTitle(xVar);
+    var yTitle = getTitle(yVar);
+    var vis = d3.select("#visualization"),
     w = window,
     d = document,
     e = d.documentElement,
     g = d.getElementsByTagName('body')[0],
     plot = d3.select("#plot")
-  console.log(plot);
-  WIDTH = (plot.clientWidth || e.clientWidth || w.innerWidth || g.clientWidth) * (8 / 10),
+    console.log(plot);
+    WIDTH = (plot.clientWidth || e.clientWidth || w.innerWidth || g.clientWidth) * (8 / 10),
     HEIGHT = (plot.clientHeight || e.clientHeight || w.innerHeight || g.clientHeight) * (8 / 10),
     MARGINS = {
       top: 50,
@@ -140,10 +140,38 @@ function drawGraph(data, key, xVar, yVar) {
     yAxis = d3.axisLeft()
     .scale(yScale);
 
-  vis.append("svg:g")
-    .attr("class", "axis")
-    .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom - 10) + ")")
-    .call(xAxis);
+    console.log(dataGroup);
+    console.log();
+    var tooltip = vis.append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+    
+    var tipMouseover = function(d, i) {
+        var html = (d[key] + "<br/>" + 
+        ((xVar === "date") ? "Date: <b>" + new Date(d.time) + "</b>": 
+        "<b>" + xScale(i) + "</b>th cycle") + ", <b>" + d[yVar] + 
+        "</b>" + yTitle);
+
+        tooltip
+            .html(html)
+            .style("position", "absolute")
+            .style("z-index", 999999)
+            .style("left", (d3.event.pageX + 15) + "px")
+            .style("top", (d3.event.pageY - 28) + "px")
+            .style("background-color", "red")
+            .style("opacity", 0.9); // started as 0!
+        console.log('trigger');
+    };
+
+    var tipMouseout = function(d) {
+        tooltip.style("opacity", 0); // don't care about position!
+        console.log('untrigger');
+    };
+    
+    vis.append("svg:g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom - 10) + ")")
+        .call(xAxis);
 
   vis.append("svg:g")
     .attr("class", "axis")
@@ -188,7 +216,7 @@ function drawGraph(data, key, xVar, yVar) {
       .attr('fill', 'none');
     vis.selectAll("dot")
       .data(d.values)
-      .enter().append("circle")
+    .enter().append("circle")
       .style("fill", colored)
       .attr('id', 'value_' + d.key)
       .attr("r", 5)
@@ -198,28 +226,30 @@ function drawGraph(data, key, xVar, yVar) {
       })
       .attr("cy", function (d) {
         return yScale(d[yVar]);
-      });
+      })
+      .on("mouseover", tipMouseover)
+      .on("mouseout", tipMouseout);
     lSpace = HEIGHT / dataGroup.length;
     vis.append("text")
-      .attr("x", WIDTH - 40)
-      .attr("y", (lSpace / 2) + i * lSpace)
-      .style("fill", "black")
-      .attr("class", "legend")
-      .text(d.key)
-      .on('click', function () {
-        var active = d.active ? false : true;
-        var opacity = active ? 0 : 1;
+        .attr("x", WIDTH - 40)
+        .attr("y", (lSpace / 2) + i * lSpace/5)
+        .style("fill", "black")
+        .attr("class", "legend")
+        .text(d.key)
+        .on('click', function () {
+            var active = d.active ? false : true;
+            var opacity = active ? 0 : 1;
 
-        d3.select("#line_" + d.key).style("opacity", opacity);
+            d3.select("#line_" + d.key).style("opacity", opacity);
 
-        d.active = active;
-        d3.selectAll("#value_" + d.key).style("opacity", opacity);
+            d.active = active;
+            d3.selectAll("#value_" + d.key).style("opacity", opacity);
+        });
 
-      });
     var circle = vis.append("circle")
       .style("fill", colored)
       .attr("cx", WIDTH - 55)
-      .attr("cy", ((lSpace / 2) + i * lSpace) - 5)
+      .attr("cy", ((lSpace / 2) + i * lSpace/5) - 5)
       .attr("r", 7)
       .on('click', function () {
         var active = d.active ? false : true;
