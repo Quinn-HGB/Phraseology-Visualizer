@@ -139,6 +139,7 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
     dataGroup.forEach(function(d, i) {
         var colored = colors[i];
         //console.log(d);
+        //console.log(i);
         vis.append('svg:path')
             .attr('d', lineGen(d.values))
             .attr('stroke', colored)
@@ -149,9 +150,11 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
             .data(d.values)
         .enter().append("circle")
             .style("fill", colored)
+            .attr('id', 'value_'+d.key)
             .attr("r", 5)
-            .attr("cx", function(i) { return x(i); })
-            .attr("cy", function(d) { return y(d.easyTime); });
+            .attr("cx", function(d, i) { return xScale(i); })
+            .attr("cy", function(d) { return yScale(d[yVar]); });
+            //console.log(xScale(i));
         lSpace = HEIGHT/dataGroup.length;
         vis.append("text")
             .attr("x", WIDTH - 40)
@@ -176,7 +179,7 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
                 var active = d.active ? false : true;
                 var opacity = active ? 0 : 1;
             
-                d3.select("#line_" + d.key).style("opacity", opacity);
+                d3.select("#value_" + d.key).style("opacity", opacity);
             
                 d.active = active;
             });
