@@ -1,6 +1,11 @@
 #controls {
   width: 100%;
   position: relative;
-  margin-left: 100px;
-  margin-bottom: 50px;
+  padding-left: 20px;
+  padding-bottom: 50px;
+  padding-top: 10px;
+}
+#plot{
+  width: 90vw;
+  height: 80vh;
 }
