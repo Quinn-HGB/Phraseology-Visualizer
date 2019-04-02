@@ -119,6 +119,13 @@ function drawGraph() {
             .attr('stroke-width', 2)
             .attr('id', 'line_'+d.key)
             .attr('fill', 'none');
+        vis.selectAll("dot")
+            .data(d.values)
+        .enter().append("circle")
+            .style("fill", colored)
+            .attr("r", 5)
+            .attr("cx", function(i) { return x(i); })
+            .attr("cy", function(d) { return y(d.easyTime); });
         lSpace = HEIGHT/dataGroup.length;
         vis.append("text")
             .attr("x", WIDTH - 40)
