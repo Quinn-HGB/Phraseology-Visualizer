@@ -138,6 +138,14 @@ function drawGraph() {
             .style("fill", colored)
             .attr("cx", WIDTH - 55)
             .attr("cy", ((lSpace / 2) + i * lSpace) - 5)
-            .attr("r", 7);
+            .attr("r", 7)
+            .on('click', function() {
+                var active = d.active ? false : true;
+                var opacity = active ? 0 : 1;
+            
+                d3.select("#line_" + d.key).style("opacity", opacity);
+            
+                d.active = active;
+            });
     });
 }
