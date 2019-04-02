@@ -95,6 +95,10 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
         bottom: 40,
         left: 60
     },
+
+    colors = new Array("hsl(0, 100%, 50%", "hsl(40, 100%, 50%)", "hsl(120, 100%, 50%)",
+    "hsl(180, 100%, 50%)", "hsl(240, 100%, 50%)", "hsl(300, 100%, 50%)"),
+
     xScale = d3.scaleLinear().range([MARGINS.left, WIDTH]).domain([d3.min(dataGroup, function(d,i) {
         return 0;
     }), d3.max(data, function(d,i) {
@@ -147,8 +151,6 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
         })
         .curve(d3.curveMonotoneX);
 
-    var colors = new Array("hsl(0, 100%, 50%", "hsl(40, 100%, 50%)", "hsl(120, 100%, 50%)",
-    "hsl(180, 100%, 50%)", "hsl(240, 100%, 50%)", "hsl(300, 100%, 50%)");
     dataGroup.forEach(function(d, i) {
         var colored = colors[i];
         //console.log(d);
@@ -164,7 +166,7 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
         .enter().append("circle")
             .style("fill", colored)
             .attr('id', 'value_'+d.key)
-            .attr("r", 5)
+            .attr("r", 4)
             .attr("cx", function(d, i) { return xScale(i); })
             .attr("cy", function(d) { return yScale(d[yVar]); });
             //console.log(xScale(i));
@@ -180,21 +182,15 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
                 var opacity = active ? 0 : 1;
             
                 d3.select("#line_" + d.key).style("opacity", opacity);
-            
+                d3.selectAll("#value_" + d.key).style("opacity", opacity);
+
                 d.active = active;
             });
+            
         var circle = vis.append("circle")
             .style("fill", colored)
             .attr("cx", WIDTH - 55)
             .attr("cy", ((lSpace / 2) + i * lSpace) - 5)
-            .attr("r", 7)
-            .on('click', function() {
-                var active = d.active ? false : true;
-                var opacity = active ? 0 : 1;
-            
-                d3.select("#value_" + d.key).style("opacity", opacity);
-            
-                d.active = active;
-            });
+            .attr("r", 7);
     });
 }
