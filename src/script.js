@@ -7,11 +7,11 @@ $(document).ready(function() {
       getData();
   });
   $("#test").click(function(){
-    console.log(sheetData);
+    convertCyclesToDays(sheetData.cycles);
   });
   $("#graph").click(function(){
-    drawGraph(sheetData.cycles,"name","date","read");
-    console.log(restructureData(sheetData.cycles,"date"))
+    drawGraph(sheetData.cycles,"name","cycles","com");
+    //console.log(restructureData(sheetData.cycles,"date"))
   });
   $("#graph2").click(function(){
     drawGraph(sheetData.cycles,"name","date","norm");
@@ -21,8 +21,7 @@ $(document).ready(function() {
 
 class Day{
   constructor(cycles){
-      this.name = cycles[0].name;
-      this.date = getDate(cycles[0].dateTime);
+      this.date = cycles[0].date;
       this.read = cycles.map(cycle => cycle.read).reduce(getSum).toString();
       this.norm = cycles.map(cycle => cycle.norm).reduce(getSum).toString();
       this.correct = cycles.map(cycle => cycle.correct).reduce(getSum).toString();
@@ -31,6 +30,14 @@ class Day{
       this.med = cycles.map(cycle => cycle.med).reduce(getSum).toString();
       this.com = cycles.map(cycle => cycle.com).reduce(getSum).toString();
   }
+}
+
+function getSum(total, num){
+    return total+num;
+}
+function convertCyclesToDays(cycles){
+    var test = restructureData(cycles,"date").map(o=>new Day(o.values));
+    console.log(test);
 }
 
 function restructureData(data, key){
@@ -85,9 +92,11 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
     xScale = d3.scaleLinear().range([MARGINS.left, WIDTH]).domain([d3.min(dataGroup, function(d,i) {
         return 0;
     }), d3.max(data, function(d,i) {
+        console.log(d);
+        console.log(data)
         return dataGroup[2].values.length;
     })]),
-    yScale = d3.scaleLinear().range([HEIGHT - MARGINS.top, 0]).domain([0, d3.max(data, function(d) {
+    yScale = d3.scaleLinear().range([HEIGHT - MARGINS.top, 10]).domain([0, d3.max(data, function(d) {
         return d[yVar];
     })]),
     xAxis = d3.axisBottom()
