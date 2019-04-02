@@ -8,6 +8,8 @@ $(document).ready(function() {
   });
   $("#test").click(function(){
     convertCyclesToDays(sheetData.cycles);
+    d3.selectAll("svg > *").remove();
+    drawGraph(sheetData.cycles,"name","date","read");
   });
   $("#Read").click(function(){
     d3.selectAll("svg > *").remove();
