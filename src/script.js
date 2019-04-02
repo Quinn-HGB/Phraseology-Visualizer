@@ -9,15 +9,28 @@ $(document).ready(function() {
   $("#test").click(function(){
     convertCyclesToDays(sheetData.cycles);
   });
-  $("#graph").click(function(){
-    drawGraph(sheetData.cycles,"name","cycles","com");
-    //console.log(restructureData(sheetData.cycles,"date"))
+  $("#Read").click(function(){
+    d3.selectAll("svg > *").remove();
+    drawGraph(sheetData.cycles,"name","date","read");
   });
-  $("#graph2").click(function(){
+  $("#Norm").click(function(){
+    d3.selectAll("svg > *").remove();
     drawGraph(sheetData.cycles,"name","date","norm");
-    console.log(restructureData(sheetData.cycles,"date"))
-  });
+  });  
+  $("#Correct").click(function(){
+    d3.selectAll("svg > *").remove();
+    drawGraph(sheetData.cycles,"name","date","correct")});
+  $("#Easy").click(function(){
+    d3.selectAll("svg > *").remove();
+    drawGraph(sheetData.cycles,"name","date","easy")});  
+  $("#Med").click(function(){
+    d3.selectAll("svg > *").remove();
+    drawGraph(sheetData.cycles,"name","date","med")});
+  $("#Com").click(function(){
+    d3.selectAll("svg > *").remove();
+    drawGraph(sheetData.cycles,"name","date","com")});   
 });
+  
 
 class Day{
   constructor(cycles){
@@ -148,12 +161,22 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
     dataGroup.forEach(function(d, i) {
         var colored = colors[i];
         //console.log(d);
+        //console.log(i);
         vis.append('svg:path')
             .attr('d', lineGen(d.values))
             .attr('stroke', colored)
             .attr('stroke-width', 2)
             .attr('id', 'line_'+d.key)
             .attr('fill', 'none');
+        vis.selectAll("dot")
+            .data(d.values)
+        .enter().append("circle")
+            .style("fill", colored)
+            .attr('id', 'value_'+d.key)
+            .attr("r", 5)
+            .attr("cx", function(d, i) { return xScale(i); })
+            .attr("cy", function(d) { return yScale(d[yVar]); });
+            //console.log(xScale(i));
         lSpace = HEIGHT/dataGroup.length;
         vis.append("text")
             .attr("x", WIDTH - 40)
@@ -173,6 +196,14 @@ function drawGraph(data,key="name",xVar="date", yVar="norm") {
             .style("fill", colored)
             .attr("cx", WIDTH - 55)
             .attr("cy", ((lSpace / 2) + i * lSpace) - 5)
-            .attr("r", 7);
+            .attr("r", 7)
+            .on('click', function() {
+                var active = d.active ? false : true;
+                var opacity = active ? 0 : 1;
+            
+                d3.select("#value_" + d.key).style("opacity", opacity);
+            
+                d.active = active;
+            });
     });
 }
