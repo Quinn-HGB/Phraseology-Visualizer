@@ -14,11 +14,10 @@
         <!--Add stuff here-->
         <button id="data" style="display: block;">Get Data</button>
         <button id="test" style="display: block;">TEST</button>
-        <button id="graph" style="display: block;">Draw</button>
-        <form class="form-inline">
+        <div class="row" id="controls">
             <select id="group" name="group">
-                <option value="Aggregate">Aggregate</option>
-                <option value="Individual">Individual</option>
+                <option value="date">Aggregate</option>
+                <option value="name" disabled="true">Individual</option>
             </select>
             <select id="x-axis" name="x-axis">
                 <option value="date">Date</option>
@@ -31,11 +30,12 @@
                 <option value="med">Medium</option>
                 <option value="com">Complex</option>
                 <option value="suspense">Suspense</option>
-                <option value="correct">Correct</option>
+                <option value="correct">Correct</option>  
             </select>
-        </form>
-        <div class="container">
-            <svg id="visualization" width="2000" height="1100"></svg>
+            <button id="graph" style="display: block;">Draw</button>
+        </div>
+        <div class="container-fluid">
+            <svg id="visualization" width="1600" height="1100"></svg>
         </div>
     </body>
 </html>

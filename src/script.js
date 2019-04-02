@@ -1,5 +1,9 @@
 
 var sheetData = undefined;
+var groupGlobal = undefined;
+var xGlobal = undefined;
+var yGlobal = undefined;
+
 
 $(document).ready(function() {
     getData();
@@ -9,28 +13,19 @@ $(document).ready(function() {
   $("#test").click(function(){
     convertCyclesToDays(sheetData.cycles);
   });
-  $("#Read").click(function(){
+  $("#graph").click(function(){
     d3.selectAll("svg > *").remove();
-    drawGraph(sheetData.cycles,"name","date","read");
+    var groupForm = document.getElementById("group");
+    var xForm = document.getElementById("x-axis");
+    var yForm = document.getElementById("y-axis");
+    var groupValue = groupForm.options[groupForm.selectedIndex].value;
+    var xValue = xForm.options[xForm.selectedIndex].value;
+    var yValue = yForm.options[yForm.selectedIndex].value;
+    drawGraph(sheetData.cycles, groupValue, xValue, yValue);
   });
-  $("#Norm").click(function(){
-    d3.selectAll("svg > *").remove();
-    drawGraph(sheetData.cycles,"name","date","norm");
-  });  
-  $("#Correct").click(function(){
-    d3.selectAll("svg > *").remove();
-    drawGraph(sheetData.cycles,"name","date","correct")});
-  $("#Easy").click(function(){
-    d3.selectAll("svg > *").remove();
-    drawGraph(sheetData.cycles,"name","date","easy")});  
-  $("#Med").click(function(){
-    d3.selectAll("svg > *").remove();
-    drawGraph(sheetData.cycles,"name","date","med")});
-  $("#Com").click(function(){
-    d3.selectAll("svg > *").remove();
-    drawGraph(sheetData.cycles,"name","date","com")});   
+
 });
-  
+
 
 class Day{
   constructor(cycles){
@@ -50,7 +45,6 @@ function getSum(total, num){
 }
 function convertCyclesToDays(cycles){
     var test = restructureData(cycles,"date").map(o=>new Day(o.values));
-    console.log(test);
 }
 
 function restructureData(data, key){
@@ -84,29 +78,26 @@ function getData(){
     });
 }
 
-function drawGraph(data,key="name",xVar="date", yVar="norm") {
+function drawGraph(data, key, xVar, yVar) {
     var dataGroup = restructureData(data,key);
     var xTitle = getTitle(xVar);
     var yTitle = getTitle(yVar);
-    //console.log(data);
-    console.log(dataGroup);
     var vis = d3.select("#visualization"),
     w = window,
     d = document,
     e = d.documentElement,
     g = d.getElementsByTagName('body')[0],
-    WIDTH = (w.innerWidth || e.clientWidth || g.clientWidth)*(9/10),
-    HEIGHT = w.innerHeight|| e.clientHeight|| g.clientHeight,
+    WIDTH = (1600 || e.clientWidth || g.clientWidth)*(9/10),
+    HEIGHT = 1100 || e.clientHeight|| g.clientHeight,
     MARGINS = {
         top: 50,
         bottom: 40,
-        left: 60
+        left: 60,
+        right: 60,
     },
     xScale = d3.scaleLinear().range([MARGINS.left, WIDTH]).domain([d3.min(dataGroup, function(d,i) {
         return 0;
     }), d3.max(data, function(d,i) {
-        console.log(d);
-        console.log(data)
         return dataGroup[2].values.length;
     })]),
     yScale = d3.scaleLinear().range([HEIGHT - MARGINS.top, 10]).domain([0, d3.max(data, function(d) {
