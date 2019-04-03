@@ -146,11 +146,11 @@ function drawGraph(data, key, xVar, yVar) {
         .style("opacity", 0);
 
     var tipMouseover = function(d, i) {
-      console.log(d3.mouse(this));
+      var timestamp = new Date(d.time);
       tooltip
         .html(d[key] + "<br/>" 
-        + ((xVar === "date") ? "Date: <b>" + new Date(d.time) + "</b>": 
-        "<b>" + i + "</b>th cycle") + ", <b>" + d[yVar] + 
+        + ((xVar === "date") ? "Date: <b>" + timestamp.toLocaleDateString("en-US") + "</b>": 
+        "Cycle <b>" + i + "</b>") + ", <b>" + d[yVar] + 
         "</b>" + " " + yTitle)
         .style("left", (d3.mouse(this)[0] + 15) + "px")
         .style("top", (d3.mouse(this)[1]) + "px")
@@ -215,6 +215,7 @@ function drawGraph(data, key, xVar, yVar) {
     .enter().append("circle")
       .style("fill", colored)
       .attr('id', 'value_' + d.key)
+      .attr("opacity", 1)
       .attr("r", 5)
       .attr('id', 'value_' + d.key)
       .attr("cx", function (d, i) {
