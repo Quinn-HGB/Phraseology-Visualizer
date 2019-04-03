@@ -175,7 +175,7 @@ function drawGraph(data, key, xVar, yVar) {
         "Cycle <b>" + i + "</b>") + ", <b>" + d[yVar] + 
         "</b>" + " " + yTitle)
         .style("left", (d3.mouse(this)[0] + 5) + "px")
-        .style("top", (d3.mouse(this)[1] + 30) + "px")
+        .style("top", (d3.mouse(this)[1] + 20) + "px")
         .style("background-color", "rgb(230, 230, 230)")
         .style("opacity", 1.2);
       //console.log('trigger');
