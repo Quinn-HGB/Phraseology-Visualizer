@@ -65,7 +65,7 @@ function restructureData(data, key) {
     .entries(data);
   if (key === "date") {
     dataGroup = [{
-      key: "Date",
+      key: "Total",
       values: dataGroup.map(o => new Day(o.values))
     }]
   }
