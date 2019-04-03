@@ -141,26 +141,22 @@ function drawGraph(data, key, xVar, yVar) {
     .scale(yScale);
 
     console.log(dataGroup);
-    console.log();
     var tooltip = vis.append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
-    
-    var tipMouseover = function(d, i) {
-        var html = (d[key] + "<br/>" + 
-        ((xVar === "date") ? "Date: <b>" + new Date(d.time) + "</b>": 
-        "<b>" + xScale(i) + "</b>th cycle") + ", <b>" + d[yVar] + 
-        "</b>" + yTitle);
 
-        tooltip
-            .html(html)
-            .style("position", "absolute")
-            .style("z-index", 999999)
-            .style("left", (d3.event.pageX + 15) + "px")
-            .style("top", (d3.event.pageY - 28) + "px")
-            .style("background-color", "red")
-            .style("opacity", 0.9); // started as 0!
-        console.log('trigger');
+    var tipMouseover = function(d, i) {
+      console.log(d[key]);
+      tooltip
+        .html(d[key] + "<br/>" 
+        + ((xVar === "date") ? "Date: <b>" + new Date(d.time) + "</b>": 
+        "<b>" + i + "</b>th cycle") + ", <b>" + d[yVar] + 
+        "</b>" + yTitle)
+        .style("left", (d3.event.pageX + 15) + "px")
+        .style("top", (d3.event.pageY - 28) + "px")
+        .style("background-color", "red")
+        .style("opacity", 0.9); // started as 0!
+      console.log('trigger');
     };
 
     var tipMouseout = function(d) {
