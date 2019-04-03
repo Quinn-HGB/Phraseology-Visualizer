@@ -150,7 +150,7 @@ function drawGraph(data, key, xVar, yVar) {
       tooltip
         .html(d[key] + "<br/>" 
         + ((xVar === "date") ? "Date: <b>" + new Date(d.time) + "</b>": 
-        "<b>" + i + "</b>th cycle") + ", <b>" + d[yVar] + 
+        "cycle <b>" + i + "</b>") + ", <b>" + d[yVar] + 
         "</b>" + " " + yTitle)
         .style("left", (d3.mouse(this)[0] + 15) + "px")
         .style("top", (d3.mouse(this)[1]) + "px")
