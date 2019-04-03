@@ -33,6 +33,23 @@ $(document).ready(function () {
 
 });
 
+class DayAverage{
+  constructor(cycles) {
+    this.date = new Date(cycles[0].date);
+    this.time = this.date.getTime();
+    this.read = cycles.map(cycle => cycle.read).reduce(getSum)/cycles.length;
+    this.norm = cycles.map(cycle => cycle.norm).reduce(getSum)/cycles.length;
+    this.correct = cycles.map(cycle => cycle.correct).reduce(getSum)/cycles.length;
+    this.suspense = cycles.map(cycle => cycle.suspense).reduce(getSum)/cycles.length;
+    this.easy = cycles.map(cycle => cycle.easy).reduce(getSum)/cycles.length;
+    this.med = cycles.map(cycle => cycle.med).reduce(getSum)/cycles.length;
+    this.com = cycles.map(cycle => cycle.com).reduce(getSum)/cycles.length;
+    this.easyTime = cycles.map(cycle => cycle.easyTime).reduce(getSum)/cycles.length;
+    this.medTime = cycles.map(cycle => cycle.medTime).reduce(getSum)/cycles.length;
+    this.comTime = cycles.map(cycle => cycle.comTime).reduce(getSum)/cycles.length;
+  }
+}
+
 
 class Day {
   constructor(cycles) {
@@ -45,9 +62,9 @@ class Day {
     this.easy = cycles.map(cycle => cycle.easy).reduce(getSum);
     this.med = cycles.map(cycle => cycle.med).reduce(getSum);
     this.com = cycles.map(cycle => cycle.com).reduce(getSum);
-    this.easyTime = cycles.map(cycle => cycle.easyTime).reduce(getSum)/cycles.length;
-    this.medTime = cycles.map(cycle => cycle.medTime).reduce(getSum)/cycles.length;
-    this.comTime = cycles.map(cycle => cycle.comTime).reduce(getSum)/cycles.length;
+    this.easyTime = cycles.map(cycle => cycle.easyTime).reduce(getSum);
+    this.medTime = cycles.map(cycle => cycle.medTime).reduce(getSum);
+    this.comTime = cycles.map(cycle => cycle.comTime).reduce(getSum);
   }
 }
 
@@ -59,18 +76,25 @@ function convertCyclesToDays(cycles) {
   var test = restructureData(cycles, "date").map(o => new Day(o.values));
 }
 
-function restructureData(data, key) {
+function restructureData(data, key, isAverage) {
   var dataGroup = d3.nest()
     .key(function (d) {
       return d[key];
     })
     .entries(data);
   if (key === "date") {
-    dataGroup = [{
-      key: "Date",
-      values: dataGroup.map(o => new Day(o.values))
-    }]
-  }
+    if(isAverage){
+      dataGroup = [{
+        key: "Average",
+        values: dataGroup.map(o => new DayAverage(o.values))
+      }]
+    } else{
+      dataGroup = [{
+        key: "Date",
+        values: dataGroup.map(o => new Day(o.values))
+      }]
+    }
+  } 
   console.log(dataGroup)
   return dataGroup;
 }
@@ -100,10 +124,13 @@ function getData() {
 }
 
 function drawGraph(data, key, xVar, yVar) {
-  var dataGroup = restructureData(data, key);
-  var xTitle = getTitle(xVar);
-  var yTitle = getTitle(yVar);
-  var vis = d3.select("#visualization"),
+  
+  var isAverage = key==="average"? true:false,
+    key = key==="average" ? "date": key,
+    dataGroup = restructureData(data, key,isAverage),
+    xTitle = getTitle(xVar),
+    yTitle = getTitle(yVar),
+    vis = d3.select("#visualization"),
     w = window,
     d = document,
     e = d.documentElement,
@@ -117,7 +144,7 @@ function drawGraph(data, key, xVar, yVar) {
     },
     WIDTH = (plot.clientWidth || e.clientWidth || w.innerWidth || g.clientWidth) * (8 / 10)-MARGINS.right-MARGINS.left,
     HEIGHT = (plot.clientHeight || e.clientHeight || w.innerHeight || g.clientHeight) * (8 / 10)-MARGINS.top-MARGINS.bottom,
-    xScale = xVar === "date" ? d3.scaleTime().range([MARGINS.left, WIDTH - MARGINS.right]).domain([d3.min(data, function (d) {
+    xScale = xVar === "date"? d3.scaleTime().range([MARGINS.left, WIDTH - MARGINS.right]).domain([d3.min(data, function (d) {
       return d.time;
     }), d3.max(data, function (d) {
       return d.time;
@@ -139,12 +166,59 @@ function drawGraph(data, key, xVar, yVar) {
     .scale(xScale),
 
     yAxis = d3.axisLeft()
-    .scale(yScale);
+    .scale(yScale),
 
-  vis.append("svg:g")
-    .attr("class", "axis")
-    .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom - 10) + ")")
-    .call(xAxis);
+    // zoom = d3.zoom()
+    //   .scaleExtent([.5, 20])
+    //   .extent([[0, 0], [WIDTH, HEIGHT]])
+    //   .on("zoom", zoomed);
+
+    // vis.append("rect")
+    //   .attr("width", WIDTH)
+    //   .attr("height", HEIGHT)
+    //   .style("fill", "none")
+    //   .style("pointer-events", "all")
+    //   .attr('transform', 'translate(' + MARGINS.left + ',' + MARGINS.top + ')')
+    //   .call(zoom);
+
+    //console.log(dataGroup);
+    tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+    var tipMouseover = function(d, i) {
+      if (key != "date") {
+        var id = "#value_" + d[key];
+        var circ = d3.selectAll(id);
+        for (var j = 0; j < circ._groups[0].length; j++) {
+          if (circ._groups[0][j].style.opacity == 0) {
+            return;
+          }
+        }
+      }
+      var timestamp = new Date(d.time);
+      tooltip
+        .html((key == "date" ? "" : d[key] + "<br/>") 
+        + ((xVar === "date") ? "Date: <b>" + timestamp.toLocaleDateString("en-US") + "</b>": 
+        "Cycle <b>" + i + "</b>") + ", <b>" + d[yVar] + 
+        "</b>" + " " + yTitle)
+        .style("left", (d3.mouse(this)[0] + 5) + "px")
+        .style("top", (d3.mouse(this)[1] + 30) + "px")
+        .style("background-color", "rgb(230, 230, 230)")
+        .style("opacity", 1.2);
+      //console.log('trigger');
+    };
+
+    var tipMouseout = function(d) {
+        tooltip.html(""); //prevents faded tooltip text from blocking other points
+        tooltip.style("opacity", 0); // don't care about position!
+        //console.log('untrigger');
+    };
+    
+    vis.append("svg:g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom - 10) + ")")
+        .call(xAxis);
 
   vis.append("svg:g")
     .attr("class", "axis")
@@ -154,7 +228,7 @@ function drawGraph(data, key, xVar, yVar) {
   vis.append("text")
     .attr("transform",
       "translate(" + (WIDTH / 2) + " ," +
-      (HEIGHT + MARGINS.top - 50) + ")")
+      (HEIGHT + MARGINS.top - 60) + ")")
     .style("text-anchor", "middle")
     .style("font-weight", "bold")
     .text(xTitle);
@@ -189,9 +263,10 @@ function drawGraph(data, key, xVar, yVar) {
       .attr('fill', 'none');
     vis.selectAll("dot")
       .data(d.values)
-      .enter().append("circle")
+    .enter().append("circle")
       .style("fill", colored)
       .attr('id', 'value_' + d.key)
+      .style("opacity", 1)
       .attr("r", 5)
       .attr('id', 'value_' + d.key)
       .attr("cx", function (d, i) {
@@ -199,28 +274,30 @@ function drawGraph(data, key, xVar, yVar) {
       })
       .attr("cy", function (d) {
         return yScale(d[yVar]);
-      });
+      })
+      .on("mouseover", tipMouseover)
+      .on("mouseout", tipMouseout);
     lSpace = HEIGHT / dataGroup.length;
     vis.append("text")
-      .attr("x", WIDTH - 40)
-      .attr("y", (lSpace / 2) + i * lSpace)
-      .style("fill", "black")
-      .attr("class", "legend")
-      .text(d.key)
-      .on('click', function () {
-        var active = d.active ? false : true;
-        var opacity = active ? 0 : 1;
+        .attr("x", WIDTH - 40)
+        .attr("y", (lSpace / 2) + i * lSpace/5)
+        .style("fill", "black")
+        .attr("class", "legend")
+        .text(d.key)
+        .on('click', function () {
+            var active = d.active ? false : true;
+            var opacity = active ? 0 : 1;
 
-        d3.select("#line_" + d.key).style("opacity", opacity);
+            d3.select("#line_" + d.key).style("opacity", opacity);
 
-        d.active = active;
-        d3.selectAll("#value_" + d.key).style("opacity", opacity);
+            d.active = active;
+            d3.selectAll("#value_" + d.key).style("opacity", opacity);
+        });
 
-      });
     var circle = vis.append("circle")
       .style("fill", colored)
       .attr("cx", WIDTH - 55)
-      .attr("cy", ((lSpace / 2) + i * lSpace) - 5)
+      .attr("cy", ((lSpace / 2) + i * lSpace/5) - 5)
       .attr("r", 7)
       .on('click', function () {
         var active = d.active ? false : true;
@@ -231,4 +308,11 @@ function drawGraph(data, key, xVar, yVar) {
         d.active = active;
       });
   });
+  // function zoomed() {
+  //   var new_xScale = d3.event.transform.rescaleX(xScale);
+  //   var new_yScale = d3.event.transform.rescaleY(yScale);  
+  //   vis.append("svg:g")
+  //     .call(xAxis.scale(new_xScale))
+  //     .call(yAxis.scale(new_yScale))
+  // }
 }
