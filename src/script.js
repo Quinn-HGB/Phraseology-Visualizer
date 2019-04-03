@@ -141,20 +141,20 @@ function drawGraph(data, key, xVar, yVar) {
     .scale(yScale);
 
     console.log(dataGroup);
-    var tooltip = vis.append("div")
+    var tooltip = d3.select("body").append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
 
     var tipMouseover = function(d, i) {
-      console.log(d[key]);
+      console.log(d3.mouse(this));
       tooltip
         .html(d[key] + "<br/>" 
         + ((xVar === "date") ? "Date: <b>" + new Date(d.time) + "</b>": 
         "<b>" + i + "</b>th cycle") + ", <b>" + d[yVar] + 
-        "</b>" + yTitle)
-        .style("left", (d3.event.pageX + 15) + "px")
-        .style("top", (d3.event.pageY - 28) + "px")
-        .style("background-color", "red")
+        "</b>" + " " + yTitle)
+        .style("left", (d3.mouse(this)[0] + 15) + "px")
+        .style("top", (d3.mouse(this)[1]) + "px")
+        .style("background-color", "white")
         .style("opacity", 0.9); // started as 0!
       console.log('trigger');
     };
