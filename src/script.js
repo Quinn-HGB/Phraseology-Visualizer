@@ -107,7 +107,7 @@ function drawGraph(data, key, xVar, yVar) {
     e = d.documentElement,
     g = d.getElementsByTagName('body')[0],
     plot = d3.select("#plot")
-    console.log(plot);
+    //console.log(plot);
     WIDTH = (plot.clientWidth || e.clientWidth || w.innerWidth || g.clientWidth) * (8 / 10),
     HEIGHT = (plot.clientHeight || e.clientHeight || w.innerHeight || g.clientHeight) * (8 / 10),
     MARGINS = {
@@ -153,8 +153,8 @@ function drawGraph(data, key, xVar, yVar) {
     //   .attr('transform', 'translate(' + MARGINS.left + ',' + MARGINS.top + ')')
     //   .call(zoom);
 
-    console.log(dataGroup);
-    var tooltip = d3.select("body").append("div")
+    //console.log(dataGroup);
+    tooltip = d3.select("body").append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
 
@@ -175,14 +175,14 @@ function drawGraph(data, key, xVar, yVar) {
         .style("left", (d3.mouse(this)[0] + 5) + "px")
         .style("top", (d3.mouse(this)[1] + 30) + "px")
         .style("background-color", "rgb(230, 230, 230)")
-        .style("opacity", 1.2); // started as 0!
-      console.log('trigger');
+        .style("opacity", 1.2);
+      //console.log('trigger');
     };
 
     var tipMouseout = function(d) {
-        tooltip.html("");
+        tooltip.html(""); //prevents faded tooltip text from blocking other points
         tooltip.style("opacity", 0); // don't care about position!
-        console.log('untrigger');
+        //console.log('untrigger');
     };
     
     vis.append("svg:g")
