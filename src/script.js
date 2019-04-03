@@ -138,7 +138,20 @@ function drawGraph(data, key, xVar, yVar) {
     .scale(xScale),
 
     yAxis = d3.axisLeft()
-    .scale(yScale);
+    .scale(yScale),
+
+    // zoom = d3.zoom()
+    //   .scaleExtent([.5, 20])
+    //   .extent([[0, 0], [WIDTH, HEIGHT]])
+    //   .on("zoom", zoomed);
+
+    // vis.append("rect")
+    //   .attr("width", WIDTH)
+    //   .attr("height", HEIGHT)
+    //   .style("fill", "none")
+    //   .style("pointer-events", "all")
+    //   .attr('transform', 'translate(' + MARGINS.left + ',' + MARGINS.top + ')')
+    //   .call(zoom);
 
     console.log(dataGroup);
     var tooltip = d3.select("body").append("div")
@@ -148,8 +161,8 @@ function drawGraph(data, key, xVar, yVar) {
     var tipMouseover = function(d, i) {
       var id = "#value_" + d[key];
       var circ = d3.selectAll(id);
-      for (var i = 0; i < circ._groups[0].length; i++) {
-        if (circ._groups[0][i].style.opacity == 0) {
+      for (var j = 0; j < circ._groups[0].length; j++) {
+        if (circ._groups[0][j].style.opacity == 0) {
           return;
         }
       }
@@ -160,8 +173,8 @@ function drawGraph(data, key, xVar, yVar) {
         "Cycle <b>" + i + "</b>") + ", <b>" + d[yVar] + 
         "</b>" + " " + yTitle)
         .style("left", (d3.mouse(this)[0] + 5) + "px")
-        .style("top", (d3.mouse(this)[1]) + "px")
-        .style("background-color", "white")
+        .style("top", (d3.mouse(this)[1] + 30) + "px")
+        .style("background-color", "rgb(230, 230, 230)")
         .style("opacity", 1.2); // started as 0!
       console.log('trigger');
     };
@@ -185,7 +198,7 @@ function drawGraph(data, key, xVar, yVar) {
   vis.append("text")
     .attr("transform",
       "translate(" + (WIDTH / 2) + " ," +
-      (HEIGHT + MARGINS.top - 50) + ")")
+      (HEIGHT + MARGINS.top - 60) + ")")
     .style("text-anchor", "middle")
     .style("font-weight", "bold")
     .text(xTitle);
@@ -265,4 +278,11 @@ function drawGraph(data, key, xVar, yVar) {
         d.active = active;
       });
   });
+  // function zoomed() {
+  //   var new_xScale = d3.event.transform.rescaleX(xScale);
+  //   var new_yScale = d3.event.transform.rescaleY(yScale);  
+  //   vis.append("svg:g")
+  //     .call(xAxis.scale(new_xScale))
+  //     .call(yAxis.scale(new_yScale))
+  // }
 }
