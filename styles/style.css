@@ -5,7 +5,14 @@
   padding-bottom: 50px;
   padding-top: 10px;
 }
+#visualization{
+  padding-top: 50px;
+  padding-left: 100px;
+}
 #plot{
   width: 90vw;
   height: 80vh;
+}
+.legend{
+  cursor: pointer;
 }
