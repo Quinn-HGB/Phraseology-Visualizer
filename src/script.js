@@ -90,7 +90,7 @@ function restructureData(data, key, isAverage) {
       }]
     } else{
       dataGroup = [{
-        key: "Date",
+        key: "Total",
         values: dataGroup.map(o => new Day(o.values))
       }]
     }
@@ -108,9 +108,9 @@ function getTitle(label) {
     case "easy": return "Easy Emails Normalized";
     case "med": return "Medium Emails Normalized";
     case "com": return "Complex Emails Normalized";
-    case "easyTime": return "Average Time Easy Emails Normalized";
-    case "medTime": return "Average Time Medium Emails Normalized";
-    case "comTime": return "Average Time Complex Emails Normalized";
+    case "easyTime": return "Time (s) Easy Emails Normalized";
+    case "medTime": return "Time (s) Medium Emails Normalized";
+    case "comTime": return "Time (s) Complex Emails Normalized";
     case "suspense": return "Emails Suspensed";
     case "correct": return "Emails Correct";
     default: return "ERR: INCORRECT VAR GIVEN";
@@ -203,7 +203,7 @@ function drawGraph(data, key, xVar, yVar) {
         "Cycle <b>" + i + "</b>") + ", <b>" + d[yVar] + 
         "</b>" + " " + yTitle)
         .style("left", (d3.mouse(this)[0] + 5) + "px")
-        .style("top", (d3.mouse(this)[1] + 30) + "px")
+        .style("top", (d3.mouse(this)[1] + 20) + "px")
         .style("background-color", "rgb(230, 230, 230)")
         .style("opacity", 1.2);
       //console.log('trigger');
