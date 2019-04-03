@@ -146,6 +146,13 @@ function drawGraph(data, key, xVar, yVar) {
         .style("opacity", 0);
 
     var tipMouseover = function(d, i) {
+      var id = "#value_" + d[key];
+      var circ = d3.selectAll(id);
+      for (var i = 0; i < circ._groups[0].length; i++) {
+        if (circ._groups[0][i].style.opacity == 0) {
+          return;
+        }
+      }
       var timestamp = new Date(d.time);
       tooltip
         .html(d[key] + "<br/>" 
@@ -160,6 +167,7 @@ function drawGraph(data, key, xVar, yVar) {
     };
 
     var tipMouseout = function(d) {
+        tooltip.html("");
         tooltip.style("opacity", 0); // don't care about position!
         console.log('untrigger');
     };
@@ -215,7 +223,7 @@ function drawGraph(data, key, xVar, yVar) {
     .enter().append("circle")
       .style("fill", colored)
       .attr('id', 'value_' + d.key)
-      .attr("opacity", 1)
+      .style("opacity", 1)
       .attr("r", 5)
       .attr('id', 'value_' + d.key)
       .attr("cx", function (d, i) {
