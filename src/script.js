@@ -162,7 +162,7 @@ function drawGraph(data, key, xVar, yVar) {
         .style("left", (d3.mouse(this)[0] + 5) + "px")
         .style("top", (d3.mouse(this)[1]) + "px")
         .style("background-color", "white")
-        .style("opacity", 1); // started as 0!
+        .style("opacity", 1.2); // started as 0!
       console.log('trigger');
     };
 
