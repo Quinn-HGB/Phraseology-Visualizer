@@ -82,9 +82,9 @@ function getTitle(label) {
     case "easy": return "Easy Emails Normalized";
     case "med": return "Medium Emails Normalized";
     case "com": return "Complex Emails Normalized";
-    case "easyTime": return "Average Time Easy Emails Normalized";
-    case "medTime": return "Average Time Medium Emails Normalized";
-    case "comTime": return "Average Time Complex Emails Normalized";
+    case "easyTime": return "Average Time (s) Easy Emails Normalized";
+    case "medTime": return "Average Time (s) Medium Emails Normalized";
+    case "comTime": return "Average Time (s) Complex Emails Normalized";
     case "suspense": return "Emails Suspensed";
     case "correct": return "Emails Correct";
     default: return "ERR: INCORRECT VAR GIVEN";
