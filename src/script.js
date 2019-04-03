@@ -159,16 +159,18 @@ function drawGraph(data, key, xVar, yVar) {
         .style("opacity", 0);
 
     var tipMouseover = function(d, i) {
-      var id = "#value_" + d[key];
-      var circ = d3.selectAll(id);
-      for (var j = 0; j < circ._groups[0].length; j++) {
-        if (circ._groups[0][j].style.opacity == 0) {
-          return;
+      if (key != "date") {
+        var id = "#value_" + d[key];
+        var circ = d3.selectAll(id);
+        for (var j = 0; j < circ._groups[0].length; j++) {
+          if (circ._groups[0][j].style.opacity == 0) {
+            return;
+          }
         }
       }
       var timestamp = new Date(d.time);
       tooltip
-        .html(d[key] + "<br/>" 
+        .html((key == "date" ? "" : d[key] + "<br/>") 
         + ((xVar === "date") ? "Date: <b>" + timestamp.toLocaleDateString("en-US") + "</b>": 
         "Cycle <b>" + i + "</b>") + ", <b>" + d[yVar] + 
         "</b>" + " " + yTitle)
