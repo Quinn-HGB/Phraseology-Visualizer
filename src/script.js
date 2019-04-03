@@ -159,10 +159,10 @@ function drawGraph(data, key, xVar, yVar) {
         + ((xVar === "date") ? "Date: <b>" + timestamp.toLocaleDateString("en-US") + "</b>": 
         "Cycle <b>" + i + "</b>") + ", <b>" + d[yVar] + 
         "</b>" + " " + yTitle)
-        .style("left", (d3.mouse(this)[0] + 15) + "px")
+        .style("left", (d3.mouse(this)[0] + 5) + "px")
         .style("top", (d3.mouse(this)[1]) + "px")
         .style("background-color", "white")
-        .style("opacity", 0.9); // started as 0!
+        .style("opacity", 1); // started as 0!
       console.log('trigger');
     };
 
