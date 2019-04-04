@@ -197,10 +197,11 @@ function drawGraph(data, key, xVar, yVar) {
         }
       }
       var timestamp = new Date(d.time);
+      console.log(d[yVar]);
       tooltip
         .html((key == "date" ? "" : d[key] + "<br/>") 
         + ((xVar === "date") ? "Date: <b>" + timestamp.toLocaleDateString("en-US") + "</b>": 
-        "Cycle <b>" + i + "</b>") + ", <b>" + d[yVar] + 
+        "Cycle <b>" + i + "</b>") + ", <b>" + Math.round(d[yVar]) + 
         "</b>" + " " + yTitle)
         .style("left", (d3.mouse(this)[0] + 5) + "px")
         .style("top", (d3.mouse(this)[1] + 20) + "px")
