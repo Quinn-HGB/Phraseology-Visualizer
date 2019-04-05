@@ -11,3 +11,4 @@ Features:
 
 Notes:
 - The line colours are hard coded in the system, if you want more colours or different colours the colours array is at around line 255 in script.js
+- The code is written to parse a very specific set of data. Be careful when trying to change where the data is being grabbed from.
