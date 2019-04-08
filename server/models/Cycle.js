@@ -13,6 +13,7 @@ module.exports = class Cycle {
     this.easyTime = Number(cycle[10]);
     this.medTime = Number(cycle[11]);
     this.comTime = Number(cycle[12]);
+    this.correctRate = Math.round(this.correct/this.norm*10000)/100;
   }
   
   dayMonth(cycle){

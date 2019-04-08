@@ -37,16 +37,17 @@ class DayAverage{
   constructor(cycles) {
     this.date = new Date(cycles[0].date);
     this.time = this.date.getTime();
-    this.read = cycles.map(cycle => cycle.read).reduce(getSum)/cycles.length;
-    this.norm = cycles.map(cycle => cycle.norm).reduce(getSum)/cycles.length;
-    this.correct = cycles.map(cycle => cycle.correct).reduce(getSum)/cycles.length;
-    this.suspense = cycles.map(cycle => cycle.suspense).reduce(getSum)/cycles.length;
-    this.easy = cycles.map(cycle => cycle.easy).reduce(getSum)/cycles.length;
-    this.med = cycles.map(cycle => cycle.med).reduce(getSum)/cycles.length;
-    this.com = cycles.map(cycle => cycle.com).reduce(getSum)/cycles.length;
-    this.easyTime = cycles.map(cycle => cycle.easyTime).reduce(getSum)/cycles.length;
-    this.medTime = cycles.map(cycle => cycle.medTime).reduce(getSum)/cycles.length;
-    this.comTime = cycles.map(cycle => cycle.comTime).reduce(getSum)/cycles.length;
+    this.read = Math.round(cycles.map(cycle => cycle.read).reduce(getSum)/cycles.length*100)/100;
+    this.norm = Math.round(cycles.map(cycle => cycle.norm).reduce(getSum)/cycles.length*100)/100;
+    this.correct = Math.round(cycles.map(cycle => cycle.correct).reduce(getSum)/cycles.length*100)/100;
+    this.suspense = Math.round(cycles.map(cycle => cycle.suspense).reduce(getSum)/cycles.length*100)/100;
+    this.easy = Math.round(cycles.map(cycle => cycle.easy).reduce(getSum)/cycles.length*100)/100;
+    this.med = Math.round(cycles.map(cycle => cycle.med).reduce(getSum)/cycles.length*100)/100;
+    this.com = Math.round(cycles.map(cycle => cycle.com).reduce(getSum)/cycles.length*100)/100;
+    this.easyTime = Math.round(cycles.map(cycle => cycle.easyTime).reduce(getSum)/cycles.length*100)/100;
+    this.medTime = Math.round(cycles.map(cycle => cycle.medTime).reduce(getSum)/cycles.length*100)/100;
+    this.comTime = Math.round(cycles.map(cycle => cycle.comTime).reduce(getSum)/cycles.length*100)/100;
+    this.correctRate = Math.round(this.correct/this.norm*10000)/100;
   }
 }
 
@@ -65,6 +66,7 @@ class Day {
     this.easyTime = cycles.map(cycle => cycle.easyTime).reduce(getSum);
     this.medTime = cycles.map(cycle => cycle.medTime).reduce(getSum);
     this.comTime = cycles.map(cycle => cycle.comTime).reduce(getSum);
+    this.correctRate = Math.round(this.correct/this.norm*10000)/100;
   }
 }
 
@@ -113,6 +115,7 @@ function getTitle(label) {
     case "comTime": return "Time (s) Complex Emails Normalized";
     case "suspense": return "Emails Suspensed";
     case "correct": return "Emails Correct";
+    case "correctRate": return "Percent Correct";
     default: return "ERR: INCORRECT VAR GIVEN";
   }
 }
