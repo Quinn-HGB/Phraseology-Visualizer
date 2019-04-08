@@ -205,7 +205,7 @@ function drawGraph(data, key, xVar, yVar) {
         .style("top", (d3.event.pageY - 45) + "px")
         .style("background-color", "rgb(230, 230, 230)")
         .transition()
-          .duration(400)
+          .duration(300)
           .style("opacity", 1);
       //console.log('trigger');
     };
@@ -218,7 +218,7 @@ function drawGraph(data, key, xVar, yVar) {
 
     var tipMouseout = function(d) {
       tooltip.transition()
-        .duration(400)
+        .duration(500)
         .style("opacity", 0); 
         //prevents faded tooltip text from blocking other points
         //console.log('untrigger');
@@ -232,7 +232,7 @@ function drawGraph(data, key, xVar, yVar) {
     .attr("class", "axis")
     .attr("transform", "translate(" + (MARGINS.left) + ",0)")
     .call(yAxis);
-    
+
   vis.append("text")
     .attr("transform",
       "translate(" + (WIDTH / 2) + " ," +
@@ -273,10 +273,9 @@ function drawGraph(data, key, xVar, yVar) {
       .data(d.values)
     .enter().append("circle")
       .style("fill", colored)
-      .attr('id', 'value_' + d.key)
+      .attr('class', 'value_' + d.key)
       .style("opacity", 1)
       .attr("r", 5)
-      .attr('id', 'value_' + d.key)
       .attr("cx", function (d, i) {
         return xVar === "date" ? xScale(d.time) : xScale(i);
       })
@@ -296,13 +295,31 @@ function drawGraph(data, key, xVar, yVar) {
         .on('click', function () {
             var active = d.active ? false : true;
             var opacity = active ? 0 : 1;
-            
-            d3.select("#line_" + d.key)
+            if (!opacity) {
+              console.log($(".value_" + d.key));
+              $(".value_" + d.key).remove();
+            } else {
+              vis.selectAll("dot")
+                .data(d.values)
+              .enter().append("circle")
+                .style("fill", colored)
+                .attr('id', 'value_' + d.key)
+                .style("opacity", 1)
+                .attr("r", 5)
+                .attr('class', 'value_' + d.key)
+                .attr("cx", function (d, i) {
+                  return xVar === "date" ? xScale(d.time) : xScale(i);
+                })
+                .attr("cy", function (d) {
+                  return yScale(d[yVar]);
+                })
+                .on("mouseover", tipMouseover)
+                .on("mousemove", tipMousemove)
+                .on("mouseout", tipMouseout);
+              }
+            d3.selectAll("#line_" + d.key)
               .style("opacity", opacity);
-
             d.active = active;
-            d3.selectAll("#value_" + d.key)
-              .style("opacity", opacity);
         });
 
     var circle = vis.append("circle")
