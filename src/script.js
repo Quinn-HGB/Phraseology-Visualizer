@@ -223,7 +223,16 @@ function drawGraph(data, key, xVar, yVar) {
         //prevents faded tooltip text from blocking other points
         //console.log('untrigger');
     };
+  vis.append("svg:g")
+    .attr("class", "axis")
+    .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom - 10) + ")")
+    .call(xAxis);
 
+  vis.append("svg:g")
+    .attr("class", "axis")
+    .attr("transform", "translate(" + (MARGINS.left) + ",0)")
+    .call(yAxis);
+    
   vis.append("text")
     .attr("transform",
       "translate(" + (WIDTH / 2) + " ," +
@@ -301,16 +310,6 @@ function drawGraph(data, key, xVar, yVar) {
       .attr("cx", WIDTH - 55)
       .attr("cy", ((lSpace / 2) + i * lSpace/5) - 5)
       .attr("r", 7);
-
-    vis.append("svg:g")
-      .attr("class", "axis")
-      .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom - 10) + ")")
-      .call(xAxis);
-
-    vis.append("svg:g")
-      .attr("class", "axis")
-      .attr("transform", "translate(" + (MARGINS.left) + ",0)")
-      .call(yAxis);
   });
   // function zoomed() {
   //   var new_xScale = d3.event.transform.rescaleX(xScale);
