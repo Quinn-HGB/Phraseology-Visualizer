@@ -1,5 +1,3 @@
-// TODO: add tooltips to points
-
 var sheetData = undefined;
 var groupGlobal = undefined;
 var xGlobal = undefined;
@@ -203,28 +201,28 @@ function drawGraph(data, key, xVar, yVar) {
         + ((xVar === "date") ? "Date: <b>" + timestamp.toLocaleDateString("en-US") + "</b>": 
         "Cycle <b>" + i + "</b>") + ", <b>" + Math.round(d[yVar]) + 
         "</b>" + " " + yTitle)
-        .style("left", (d3.mouse(this)[0] + 5) + "px")
-        .style("top", (d3.mouse(this)[1] + 20) + "px")
+        .style("left", (d3.event.pageX + 5) + "px")
+        .style("top", (d3.event.pageY - 45) + "px")
         .style("background-color", "rgb(230, 230, 230)")
-        .style("opacity", 1.2);
+        .transition()
+          .duration(400)
+          .style("opacity", 1);
       //console.log('trigger');
     };
 
+    var tipMousemove = function() {
+      tooltip
+        .style("left", (d3.event.pageX + 5) + "px")
+        .style("top", (d3.event.pageY - 45) + "px");
+    };
+
     var tipMouseout = function(d) {
-        tooltip.html(""); //prevents faded tooltip text from blocking other points
-        tooltip.style("opacity", 0); // don't care about position!
+      tooltip.transition()
+        .duration(400)
+        .style("opacity", 0); 
+        //prevents faded tooltip text from blocking other points
         //console.log('untrigger');
     };
-    
-    vis.append("svg:g")
-        .attr("class", "axis")
-        .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom - 10) + ")")
-        .call(xAxis);
-
-  vis.append("svg:g")
-    .attr("class", "axis")
-    .attr("transform", "translate(" + (MARGINS.left) + ",0)")
-    .call(yAxis);
 
   vis.append("text")
     .attr("transform",
@@ -277,6 +275,7 @@ function drawGraph(data, key, xVar, yVar) {
         return yScale(d[yVar]);
       })
       .on("mouseover", tipMouseover)
+      .on("mousemove", tipMousemove)
       .on("mouseout", tipMouseout);
     lSpace = HEIGHT / dataGroup.length;
     vis.append("text")
@@ -288,26 +287,30 @@ function drawGraph(data, key, xVar, yVar) {
         .on('click', function () {
             var active = d.active ? false : true;
             var opacity = active ? 0 : 1;
-
-            d3.select("#line_" + d.key).style("opacity", opacity);
+            
+            d3.select("#line_" + d.key)
+              .style("opacity", opacity);
 
             d.active = active;
-            d3.selectAll("#value_" + d.key).style("opacity", opacity);
+            d3.selectAll("#value_" + d.key)
+              .style("opacity", opacity);
         });
 
     var circle = vis.append("circle")
       .style("fill", colored)
       .attr("cx", WIDTH - 55)
       .attr("cy", ((lSpace / 2) + i * lSpace/5) - 5)
-      .attr("r", 7)
-      .on('click', function () {
-        var active = d.active ? false : true;
-        var opacity = active ? 0 : 1;
+      .attr("r", 7);
 
-        d3.select("#value_" + d.key).style("opacity", opacity);
+    vis.append("svg:g")
+      .attr("class", "axis")
+      .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom - 10) + ")")
+      .call(xAxis);
 
-        d.active = active;
-      });
+    vis.append("svg:g")
+      .attr("class", "axis")
+      .attr("transform", "translate(" + (MARGINS.left) + ",0)")
+      .call(yAxis);
   });
   // function zoomed() {
   //   var new_xScale = d3.event.transform.rescaleX(xScale);
