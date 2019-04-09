@@ -182,9 +182,9 @@ function drawGraph(data, key, xVar, yVar) {
     //console.log(dataGroup);
     tooltip = d3.select("body").append("div")
         .attr("class", "tooltip")
-        .style("opacity", 0);
+        .style("opacity", 0),
 
-    var tipMouseover = function(d, i) {
+    tipMouseover = function(d, i) {
       if (key != "date") {
         var id = "#value_" + d[key];
         var circ = d3.selectAll(id);
@@ -194,7 +194,7 @@ function drawGraph(data, key, xVar, yVar) {
           }
         }
       }
-      var timestamp = new Date(d.time);
+      timestamp = new Date(d.time);
       console.log(d[yVar]);
       tooltip
         .html((key == "date" ? "" : d[key] + "<br/>") 
@@ -208,21 +208,22 @@ function drawGraph(data, key, xVar, yVar) {
           .duration(300)
           .style("opacity", 1);
       //console.log('trigger');
-    };
+    },
 
-    var tipMousemove = function() {
+    tipMousemove = function() {
       tooltip
         .style("left", (d3.event.pageX + 5) + "px")
         .style("top", (d3.event.pageY - 45) + "px");
-    };
+    },
 
-    var tipMouseout = function(d) {
+    tipMouseout = function(d) {
       tooltip.transition()
         .duration(500)
         .style("opacity", 0); 
         //prevents faded tooltip text from blocking other points
         //console.log('untrigger');
     };
+
   vis.append("svg:g")
     .attr("class", "axis")
     .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom - 10) + ")")
@@ -261,6 +262,7 @@ function drawGraph(data, key, xVar, yVar) {
 
   var colors = new Array("hsl(0, 100%, 50%", "hsl(40, 100%, 50%)", "hsl(120, 100%, 50%)",
     "hsl(180, 100%, 50%)", "hsl(240, 100%, 50%)", "hsl(300, 100%, 50%)");
+    
   dataGroup.forEach(function (d, i) {
     var colored = colors[i];
     vis.append('svg:path')
