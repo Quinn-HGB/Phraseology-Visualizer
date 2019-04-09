@@ -179,20 +179,6 @@ function drawGraph(data, key, xVar, yVar) {
 
     yAxis = d3.axisLeft()
     .scale(yScale),
-
-    // zoom = d3.zoom()
-    //   .scaleExtent([.5, 20])
-    //   .extent([[0, 0], [WIDTH, HEIGHT]])
-    //   .on("zoom", zoomed);
-
-    // vis.append("rect")
-    //   .attr("width", WIDTH)
-    //   .attr("height", HEIGHT)
-    //   .style("fill", "none")
-    //   .style("pointer-events", "all")
-    //   .attr('transform', 'translate(' + MARGINS.left + ',' + MARGINS.top + ')')
-    //   .call(zoom);
-
     //console.log(dataGroup);
     tooltip = d3.select("body").append("div")
         .attr("class", "tooltip")
@@ -304,51 +290,44 @@ function drawGraph(data, key, xVar, yVar) {
       .attr("cy", ((lSpace / 2) + i * lSpace/5) - 5)
       .attr("r", 7);
   });
-  // function zoomed() {
-  //   var new_xScale = d3.event.transform.rescaleX(xScale);
-  //   var new_yScale = d3.event.transform.rescaleY(yScale);  
-  //   vis.append("svg:g")
-  //     .call(xAxis.scale(new_xScale))
-  //     .call(yAxis.scale(new_yScale))
-  // }
-}
-
-function tipMouseover(d, i) {
-  if (key != "date") {
-    var id = "#value_" + d[key];
-    var circ = d3.selectAll(id);
-    for (var j = 0; j < circ._groups[0].length; j++) {
-      if (circ._groups[0][j].style.opacity == 0) {
-        return;
+  
+  function tipMouseover(d, i) {
+    if (key != "date") {
+      var id = "#value_" + d[key];
+      var circ = d3.selectAll(id);
+      for (var j = 0; j < circ._groups[0].length; j++) {
+        if (circ._groups[0][j].style.opacity == 0) {
+          return;
+        }
       }
     }
-  }
-  timestamp = new Date(d.time);
-  console.log(d[yVar]);
-  tooltip
-    .html((key == "date" ? "" : d[key] + "<br/>") 
-    + ((xVar === "date") ? "Date: <b>" + timestamp.toLocaleDateString("en-US") + "</b>": 
-    "Cycle <b>" + i + "</b>") + ", <b>" + Math.round(d[yVar]) + 
-    "</b>" + " " + yTitle)
-    .style("left", (d3.event.pageX + 5) + "px")
-    .style("top", (d3.event.pageY - 45) + "px")
-    .style("background-color", "rgb(230, 230, 230)")
-    .transition()
-      .duration(300)
-      .style("opacity", 1);
-  //console.log('trigger');
-};
-
-function tipMousemove() {
-  tooltip
-    .style("left", (d3.event.pageX + 5) + "px")
-    .style("top", (d3.event.pageY - 45) + "px");
-};
-
-function tipMouseout(d) {
-  tooltip.transition()
-    .duration(500)
-    .style("opacity", 0); 
-    //prevents faded tooltip text from blocking other points
-    //console.log('untrigger');
-};
+    timestamp = new Date(d.time);
+    console.log(d[yVar]);
+    tooltip
+      .html((key == "date" ? "" : d[key] + "<br/>") 
+      + ((xVar === "date") ? "Date: <b>" + timestamp.toLocaleDateString("en-US") + "</b>": 
+      "Cycle <b>" + i + "</b>") + ", <b>" + Math.round(d[yVar]) + 
+      "</b>" + " " + yTitle)
+      .style("left", (d3.event.pageX + 5) + "px")
+      .style("top", (d3.event.pageY - 45) + "px")
+      .style("background-color", "rgb(230, 230, 230)")
+      .transition()
+        .duration(300)
+        .style("opacity", 1);
+    //console.log('trigger');
+  };
+  
+  function tipMousemove() {
+    tooltip
+      .style("left", (d3.event.pageX + 5) + "px")
+      .style("top", (d3.event.pageY - 45) + "px");
+  };
+  
+  function tipMouseout(d) {
+    tooltip.transition()
+      .duration(500)
+      .style("opacity", 0); 
+      //prevents faded tooltip text from blocking other points
+      //console.log('untrigger');
+  };
+}
