@@ -46,6 +46,10 @@ class DayAverage{
     this.medTime = Math.round(cycles.map(cycle => cycle.medTime).reduce(getSum)/cycles.length*100)/100;
     this.comTime = Math.round(cycles.map(cycle => cycle.comTime).reduce(getSum)/cycles.length*100)/100;
     this.correctRate = Math.round(this.correct/this.norm*10000)/100;
+    this.correctRate = Math.round(this.correct/this.norm*10000)/100;
+    this.easyPercentage = Math.round(this.easy/this.norm*10000)/100;
+    this.medPercentage = Math.round(this.med/this.norm*10000)/100;
+    this.comPercentage = Math.round(this.com/this.norm*10000)/100;
   }
 }
 
@@ -65,6 +69,10 @@ class Day {
     this.medTime = cycles.map(cycle => cycle.medTime).reduce(getSum);
     this.comTime = cycles.map(cycle => cycle.comTime).reduce(getSum);
     this.correctRate = Math.round(this.correct/this.norm*10000)/100;
+    this.correctRate = Math.round(this.correct/this.norm*10000)/100;
+    this.easyPercentage = Math.round(this.easy/this.norm*10000)/100;
+    this.medPercentage = Math.round(this.med/this.norm*10000)/100;
+    this.comPercentage = Math.round(this.com/this.norm*10000)/100;
   }
 }
 
@@ -114,6 +122,9 @@ function getTitle(label) {
     case "suspense": return "Emails Suspensed";
     case "correct": return "Emails Correct";
     case "correctRate": return "Percent Correct";
+    case "easyPercentage": return "Percent Easy";
+    case "medPercentage": return "Percent Medium";
+    case "comPercentage": return "Percent Complex";
     default: return "ERR: INCORRECT VAR GIVEN";
   }
 }
