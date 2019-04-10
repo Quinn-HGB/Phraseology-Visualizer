@@ -23,10 +23,12 @@ $(document).ready(function () {
     var groupForm = document.getElementById("group");
     var xForm = document.getElementById("x-axis");
     var yForm = document.getElementById("y-axis");
+    var chartType = document.getElementById("chartType");
     var groupValue = groupForm.options[groupForm.selectedIndex].value;
     var xValue = xForm.options[xForm.selectedIndex].value;
     var yValue = yForm.options[yForm.selectedIndex].value;
-    drawGraph(sheetData.cycles, groupValue, xValue, yValue);
+    var chartValue = chartType.options[chartType.selectedIndex].value;
+    drawGraph(sheetData.cycles, groupValue, xValue, yValue, chartValue);
   });
 
 });
@@ -46,7 +48,7 @@ class DayAverage{
     this.medTime = Math.round(cycles.map(cycle => cycle.medTime).reduce(getSum)/cycles.length*100)/100;
     this.comTime = Math.round(cycles.map(cycle => cycle.comTime).reduce(getSum)/cycles.length*100)/100;
     this.correctRate = Math.round(this.correct/this.norm*10000)/100;
-    this.correctRate = Math.round(this.correct/this.norm*10000)/100;
+    // this.correctRate = Math.round(this.correct/this.norm*10000)/100;
     this.easyPercentage = Math.round(this.easy/this.norm*10000)/100;
     this.medPercentage = Math.round(this.med/this.norm*10000)/100;
     this.comPercentage = Math.round(this.com/this.norm*10000)/100;
@@ -69,7 +71,7 @@ class Day {
     this.medTime = cycles.map(cycle => cycle.medTime).reduce(getSum);
     this.comTime = cycles.map(cycle => cycle.comTime).reduce(getSum);
     this.correctRate = Math.round(this.correct/this.norm*10000)/100;
-    this.correctRate = Math.round(this.correct/this.norm*10000)/100;
+    // this.correctRate = Math.round(this.correct/this.norm*10000)/100;
     this.easyPercentage = Math.round(this.easy/this.norm*10000)/100;
     this.medPercentage = Math.round(this.med/this.norm*10000)/100;
     this.comPercentage = Math.round(this.com/this.norm*10000)/100;
