@@ -34,14 +34,20 @@ $(document).ready(function () {
     $('#chartType').hide();
 
      $('#y-axis').change(function () {
-        if ($('#y-axis option:selected').text() == "Normalized"){
-            $('#chartType').show();
-        }
-         else { 
-              $('#chartType').hide();
-         }
+       switch ($('#y-axis option:selected').text()) {
+        case "Normalized":
+          $('#chartType').show();
+          break;
+        case "Read":
+          $('#chartType').show();
+          var selected = $('#chartType option[value=line]').prop('selected', true);
+          selected.prop("disabled", true);
+          break;
+        default:
+          $('#chartType').hide();
+       }
     });
-});
+  });
 });
 
 class DayAverage{
