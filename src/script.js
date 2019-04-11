@@ -31,8 +31,7 @@ $(document).ready(function () {
     drawGraph(sheetData.cycles, groupValue, xValue, yValue, chartValue);
   });
   $(document).ready(function() {
-    $('#chartType').hide();
-
+    
      $('#y-axis').change(function () {
        switch ($('#y-axis option:selected').text()) {
         case "Normalized":
