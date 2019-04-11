@@ -33,6 +33,7 @@ $(document).ready(function () {
   $(document).ready(function() {
     
      $('#y-axis').change(function () {
+
        switch ($('#y-axis option:selected').text()) {
         case "Normalized":
           $('#chartType').show();
@@ -41,6 +42,7 @@ $(document).ready(function () {
           $('#chartType').show();
           var selected = $('#chartType option[value=line]').prop('selected', true);
           selected.prop("disabled", true);
+          $('#chartType option[value=default]').prop('selected', true);
           break;
         default:
           $('#chartType').hide();
