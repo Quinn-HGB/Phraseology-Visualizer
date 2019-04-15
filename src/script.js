@@ -50,22 +50,20 @@ $(document).ready(function () {
           break;
         case "Date":
         case "Cycle":
-          var selected = $('#chartType option[value=bar]').prop('selected', true);
-          selected.prop("disabled", true);
-          $('#chartType option[value=default]').prop('selected', true);
+          $('#chartType option[value=bar]').prop("disabled", true);
           break;
         default:
-          $('#chartType').show();
+          console.log("something's wrong");
        }
       });
-    // $('#y-axis').change(function () {
-    //    $('option').prop("disabled", false);
-    //    switch ($('#y-axis option:selected').text()) {
+     $('#y-axis').change(function () {
+       $('option').prop("disabled", false);
+       switch ($('#y-axis option:selected').text()) {
 
-    //     default:
-    //       $('option').show();
-    //    }
-    //   });
+        default:
+          $('option').show();
+       }
+      });
   });
 });
 
