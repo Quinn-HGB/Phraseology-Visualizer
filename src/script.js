@@ -33,49 +33,39 @@ $(document).ready(function () {
   $(document).ready(function() {
     
      $('#x-axis').change(function () {
+      $('option').prop("disabled", false);
        switch ($('#x-axis option:selected').text()) {
+        case "Cluster":
+          $('#chartType option[value=line]').prop("disabled", true);
+          $('#chartType option[value=scatter]').prop("disabled", true);
+          $('#y-axis option[value=easy]').prop("disabled", true);
+          $('#y-axis option[value=med]').prop("disabled", true);
+          $('#y-axis option[value=com]').prop("disabled", true);
+          $('#y-axis option[value=easyPercentage]').prop("disabled", true);
+          $('#y-axis option[value=medPercentage]').prop("disabled", true);
+          $('#y-axis option[value=comPercentage]').prop("disabled", true);
+          $('#y-axis option[value=easyTime]').prop("disabled", true);
+          $('#y-axis option[value=medTime]').prop("disabled", true);
+          $('#y-axis option[value=comTime]').prop("disabled", true);
+          break;
         case "Date":
         case "Cycle":
           var selected = $('#chartType option[value=bar]').prop('selected', true);
           selected.prop("disabled", true);
           $('#chartType option[value=default]').prop('selected', true);
-        case "Cluster":
-          var selected = $('#chartType option[value=line]').prop('selected', true);
-          selected.prop("disabled", true);
-          var selected = $('#chartType option[value=scatter]').prop('selected', true);
-          selected.prop("disabled", true);
-          // start here
-          var selected = $('#y-axis option[value=easy]').prop('selected', true);
-          selected.prop("disabled", true);
-          var selected = $('#y-axis option[value=med]').prop('selected', true);
-          selected.prop("disabled", true);
-          var selected = $('#y-axis option[value=com]').prop('selected', true);
-          selected.prop("disabled", true);
-          var selected = $('#y-axis option[value=easyPercentage]').prop('selected', true);
-          selected.prop("disabled", true);
-          var selected = $('#y-axis option[value=medPercentage]').prop('selected', true);
-          selected.prop("disabled", true);
-          var selected = $('#y-axis option[value=comPercentage]').prop('selected', true);
-          selected.prop("disabled", true);
-          var selected = $('#y-axis option[value=easyTime]').prop('selected', true);
-          selected.prop("disabled", true);
-          var selected = $('#y-axis option[value=medTime]').prop('selected', true);
-          selected.prop("disabled", true);
-          var selected = $('#y-axis option[value=comTime]').prop('selected', true);
-          selected.prop("disabled", true);
-          $('option[value=default]').prop('selected', true);
-          
+          break;
         default:
           $('#chartType').show();
        }
       });
-    $('#y-axis').change(function () {
-       switch ($('#y-axis option:selected').text()) {
+    // $('#y-axis').change(function () {
+    //    $('option').prop("disabled", false);
+    //    switch ($('#y-axis option:selected').text()) {
 
-        default:
-          $('#chartType').show();
-       }
-      });
+    //     default:
+    //       $('option').show();
+    //    }
+    //   });
   });
 });
 
