@@ -583,17 +583,12 @@ function drawBar(data, key, xVar, yVar) {
     },
     WIDTH = (plot.clientWidth || e.clientWidth || w.innerWidth || g.clientWidth) * (8 / 10)-MARGINS.right-MARGINS.left,
     HEIGHT = (plot.clientHeight || e.clientHeight || w.innerHeight || g.clientHeight) * (8 / 10)-MARGINS.top-MARGINS.bottom,
-    xScale = xVar === "date" ? d3.scaleTime()
+    xScale0 = d3.scaleBand()
       .range([MARGINS.left, WIDTH - MARGINS.right])
-      .domain([d3.min(data, function (d) {
-        return d.time;
-      }), d3.max(data, function (d) {
-        return d.time;
-      })]) : d3.scaleLinear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([d3.min(data, function (d, i) {
-        return 0;
-      }), d3.max(dataGroup, function (d, i) {
-        return d.values.length;
-      })]),
+      .domain(d3.range(dataGroup.length)),
+    xScale1 = d3.scaleBand()
+      .domain(d3.range(3))
+      .range([0, xScale0.bandwidth() - 5]),
     yScale = key !== "date" ? d3.scaleLinear()
       .range([HEIGHT - MARGINS.top, 10])
       .domain([d3.max([0, d3.min(data, function (d) {
@@ -607,8 +602,7 @@ function drawBar(data, key, xVar, yVar) {
     }), d3.max(dataGroup[0].values, function (d) {
       return d[yVar]
     })]),
-    xAxis = d3.axisBottom()
-    .scale(xScale),
+    xAxis = d3.axisBottom(xScale0),
 
     yAxis = d3.axisLeft()
     .scale(yScale),
@@ -644,27 +638,45 @@ function drawBar(data, key, xVar, yVar) {
     .style("font-weight", "bold")
     .text(yTitle);
 
-
+  dataGroup.forEach(function(d, i) {
+    var largestTime = 0;
+    for (var j = 0; j < dataGroup[i].values.length; j++) {
+      if (dataGroup[i].values[j].time > largestTime) {
+        largestTime = dataGroup[i].values[j].time;
+      }
+    }
+    for (var k in dataGroup[i].values) {
+      if (dataGroup[i].values[k].time < largestTime) {
+        delete dataGroup[i].values[k];
+      }
+    }
+  });
+  
   var colors = new Array("hsl(0, 100%, 50%", "hsl(40, 100%, 50%)", "hsl(120, 100%, 50%)",
     "hsl(180, 100%, 50%)", "hsl(240, 100%, 50%)", "hsl(300, 100%, 50%)");
 
   dataGroup.forEach(function (d, i) {
     var colored = colors[i];
-
     vis.selectAll("rectangle")
       .data(d.values)
-    .enter().append("rect")
+    .enter().append('g')
       .style("fill", colored)
+      .attr("transform", function(d, i) {return "translate(" + xScale1(i) + ",0)"; })
+    .selectAll("rect")
+      .data(d)
+    .enter().append("rect")
+      .attr("width", xScale1.bandwidth())
       .attr('class', 'value_' + d.key)
       .style("opacity", 1)
       .attr("x", function (d, i) {
-        return xVar === "date" ? xScale(d.time) : xScale(i);
+        console.log(xScale0(i));
+        return xScale0(i);
       })
       .attr("height", function (d) {
         return HEIGHT - MARGINS.bottom - 10 - yScale(d[yVar]);
       })
-      .attr("width", 30)
       .attr("y", function (d) {
+        console.log(yScale(d[yVar]));
         return yScale(d[yVar]);
       })
       .on("mouseover", tipMouseover)
@@ -691,7 +703,7 @@ function drawBar(data, key, xVar, yVar) {
                 .attr('class', 'value_' + d.key)
                 .style("opacity", 1)
                 .attr("x", function (d, i) {
-                  return xVar === "date" ? xScale(d.time) : xScale(i);
+                  return xScale0(i);
                 })
                 .attr("height", function (d) {
                   return HEIGHT - MARGINS.bottom - 10 - yScale(d[yVar]);
