@@ -30,17 +30,53 @@ $(document).ready(function () {
     var chartValue = chartType.options[chartType.selectedIndex].value;
     drawGraph(sheetData.cycles, groupValue, xValue, yValue, chartValue);
   });
-  // $(document).ready(function() {
+  $(document).ready(function() {
     
-  //    $('#y-axis').change(function () {
+     $('#x-axis').change(function () {
+       switch ($('#x-axis option:selected').text()) {
+        case "Date":
+        case "Cycle":
+          var selected = $('#chartType option[value=bar]').prop('selected', true);
+          selected.prop("disabled", true);
+          $('#chartType option[value=default]').prop('selected', true);
+        case "Cluster":
+          var selected = $('#chartType option[value=line]').prop('selected', true);
+          selected.prop("disabled", true);
+          var selected = $('#chartType option[value=scatter]').prop('selected', true);
+          selected.prop("disabled", true);
+          // start here
+          var selected = $('#chartType option[value=line]').prop('selected', true);
+          selected.prop("disabled", true);
+          var selected = $('#chartType option[value=line]').prop('selected', true);
+          selected.prop("disabled", true);
+          var selected = $('#chartType option[value=line]').prop('selected', true);
+          selected.prop("disabled", true);
+          var selected = $('#chartType option[value=line]').prop('selected', true);
+          selected.prop("disabled", true);
+          var selected = $('#chartType option[value=line]').prop('selected', true);
+          selected.prop("disabled", true);
+          var selected = $('#chartType option[value=line]').prop('selected', true);
+          selected.prop("disabled", true);
+          var selected = $('#chartType option[value=line]').prop('selected', true);
+          selected.prop("disabled", true);
+          var selected = $('#chartType option[value=line]').prop('selected', true);
+          selected.prop("disabled", true);
+          var selected = $('#chartType option[value=line]').prop('selected', true);
+          selected.prop("disabled", true);
+          $('#chartType option[value=default]').prop('selected', true);
+          
+        default:
+          $('#chartType').show();
+       }
+      });
+    $('#y-axis').change(function () {
+       switch ($('#y-axis option:selected').text()) {
 
-  //      switch ($('#y-axis option:selected').text()) {
-
-  //       default:
-  //         $('#chartType').show();
-  //      }
-  //   });
-  // });
+        default:
+          $('#chartType').show();
+       }
+      });
+  });
 });
 
 class DayAverage{
@@ -633,7 +669,6 @@ function drawBar(data, key, xVar, yVar) {
       .style("fill", colored)
       .attr('class', 'value_' + d.key)
       .style("opacity", 1)
-      .attr("transform", "rotate(180, x, y)")
       .attr("x", function (d, i) {
         return xVar === "date" ? xScale(d.time) : xScale(i);
       })
