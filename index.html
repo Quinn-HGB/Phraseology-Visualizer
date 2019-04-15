@@ -3,6 +3,7 @@
   <head>
     <title>Phraseology Visualizer</title>
     <script src="http://d3js.org/d3.v4.js" charset="utf-8"></script>
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="src/script.js"></script>
     <link
@@ -28,15 +29,15 @@
       <select id="y-axis" name="y-axis">
         <option value="norm">Normalized</option>
         <option value="read">Read</option>
-        <option value="easy">Easy</option>
-        <option value="med">Medium</option>
-        <option value="com">Complex</option>
-        <option value="easyPercentage">Percent Easy</option>
-        <option value="medPercentage">Percent Medium</option>
-        <option value="comPercentage">Percent Complex</option>
-        <option value="easyTime">Average Time Easy</option>
-        <option value="medTime">Average Time Medium</option>
-        <option value="comTime">Average Time Complex</option>
+        <option value="easy" class="diff">Easy</option>
+        <option value="med" class="diff">Medium</option>
+        <option value="com" class="diff">Complex</option>
+        <option value="easyPercentage" class="diffPercent">Percent Easy</option>
+        <option value="medPercentage" class="diffPercent">Percent Medium</option>
+        <option value="comPercentage" class="diffPercent">Percent Complex</option>
+        <option value="easyTime" class="diffTime">Average Time Easy</option>
+        <option value="medTime" class="diffTime">Average Time Medium</option>
+        <option value="comTime" class="diffTime">Average Time Complex</option>
         <option value="suspense">Suspense</option>
         <option value="correct">Correct</option>
         <option value="correctRate">Correct Rate</option>
