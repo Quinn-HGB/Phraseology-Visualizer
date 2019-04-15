@@ -45,25 +45,25 @@ $(document).ready(function () {
           var selected = $('#chartType option[value=scatter]').prop('selected', true);
           selected.prop("disabled", true);
           // start here
-          var selected = $('#chartType option[value=line]').prop('selected', true);
+          var selected = $('#y-axis option[value=easy]').prop('selected', true);
           selected.prop("disabled", true);
-          var selected = $('#chartType option[value=line]').prop('selected', true);
+          var selected = $('#y-axis option[value=med]').prop('selected', true);
           selected.prop("disabled", true);
-          var selected = $('#chartType option[value=line]').prop('selected', true);
+          var selected = $('#y-axis option[value=com]').prop('selected', true);
           selected.prop("disabled", true);
-          var selected = $('#chartType option[value=line]').prop('selected', true);
+          var selected = $('#y-axis option[value=easyPercentage]').prop('selected', true);
           selected.prop("disabled", true);
-          var selected = $('#chartType option[value=line]').prop('selected', true);
+          var selected = $('#y-axis option[value=medPercentage]').prop('selected', true);
           selected.prop("disabled", true);
-          var selected = $('#chartType option[value=line]').prop('selected', true);
+          var selected = $('#y-axis option[value=comPercentage]').prop('selected', true);
           selected.prop("disabled", true);
-          var selected = $('#chartType option[value=line]').prop('selected', true);
+          var selected = $('#y-axis option[value=easyTime]').prop('selected', true);
           selected.prop("disabled", true);
-          var selected = $('#chartType option[value=line]').prop('selected', true);
+          var selected = $('#y-axis option[value=medTime]').prop('selected', true);
           selected.prop("disabled", true);
-          var selected = $('#chartType option[value=line]').prop('selected', true);
+          var selected = $('#y-axis option[value=comTime]').prop('selected', true);
           selected.prop("disabled", true);
-          $('#chartType option[value=default]').prop('selected', true);
+          $('option[value=default]').prop('selected', true);
           
         default:
           $('#chartType').show();
