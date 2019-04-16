@@ -160,7 +160,7 @@ function getTitle(label) {
     case "easyPercentage": return "Percent Easy";
     case "medPercentage": return "Percent Medium";
     case "comPercentage": return "Percent Complex";
-    case ""
+    case "":
     default: return "ERR: INCORRECT VAR GIVEN";
   }
 }
