@@ -6,18 +6,6 @@ var yGlobal = undefined;
 
 $(document).ready(function () {
   getData();
-  $("#data").click(function () {
-    getData();
-  });
-  $("#test").click(function () {
-    convertCyclesToDays(sheetData.cycles);
-    d3.selectAll("svg > *").remove();
-    drawGraph(sheetData.cycles,"name","date","read");
-  });
-  $("#Read").click(function(){
-    d3.selectAll("svg > *").remove();
-    drawGraph(sheetData.cycles, "name", "date", "read");
-  });
   $("#graph").click(function () {
     d3.selectAll("svg > *").remove();
     var groupForm = document.getElementById("group");
