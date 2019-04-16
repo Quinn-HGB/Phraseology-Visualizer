@@ -1,5 +1,4 @@
 function drawBar(data, key, xVar, yVar) {
-
     var isAverage = key==="average"? true:false,
       key = key==="average" ? "date": key,
       dataGroup = restructureData(data, key,isAverage);
@@ -79,7 +78,6 @@ function drawBar(data, key, xVar, yVar) {
         .range([HEIGHT - MARGINS.top, 10])
         .domain([0, 60]),
       xAxis = d3.axisBottom(xScale0),
-
       yAxis = d3.axisLeft()
       .scale(yScale),
       //console.log(dataGroup);
@@ -169,17 +167,10 @@ function drawBar(data, key, xVar, yVar) {
       .attr("y", function (d) {
         return yScale(d);
       })
-
-      // .on("mouseover", tipMouseover)
-      // .on("mousemove", tipMousemove)
-      // .on("mouseout", tipMouseout);
+      .on("mouseover", tipMouseover)
+      .on("mousemove", tipMousemove)
+      .on("mouseout", tipMouseout);
     lSpace = HEIGHT / dataGroup.length;
-    vis.append("text")
-        .attr("x", WIDTH - 40)
-        .attr("y", (lSpace / 2) + i * lSpace/5)
-        .style("fill", "black")
-        .attr("class", "legend")
-        .text(d.key)
         // .on('click', function () {
         //     var active = d.active ? false : true;
         //     var opacity = active ? 0 : 1;
@@ -211,11 +202,6 @@ function drawBar(data, key, xVar, yVar) {
         //     d.active = active;
         // });
 
-    var circle = vis.append("circle")
-      .style("fill", colored)
-      .attr("cx", WIDTH - 55)
-      .attr("cy", ((lSpace / 2) + i * lSpace/5) - 5)
-      .attr("r", 7);
 
     function tipMouseover(d, i) {
       if (key != "date") {

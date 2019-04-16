@@ -145,9 +145,10 @@ function getTitle(label) {
   switch (label) {
     case "date": return "Date";
     case "cycles": return "Cycle";
-    case "":
+    case "cluster": return "Name";
     case "read": return "Emails Read";
-    case "norm": return "Emails Normalized";
+    case "norm": 
+    case "diff": return "Emails Normalized";
     case "easy": return "Easy Emails Normalized";
     case "med": return "Medium Emails Normalized";
     case "com": return "Complex Emails Normalized";
@@ -160,7 +161,8 @@ function getTitle(label) {
     case "easyPercentage": return "Percent Easy";
     case "medPercentage": return "Percent Medium";
     case "comPercentage": return "Percent Complex";
-    case "":
+    case "diffPercentage": return "Percent";
+    case "diffAverage": return "Seconds Taken Per Email";
     default: return "ERR: INCORRECT VAR GIVEN";
   }
 }
