@@ -174,6 +174,7 @@ function getData() {
 }
 
 function drawGraph(data, groupValue, xValue, yValue, chartValue) {
+  console.log(data);
   switch(chartValue) {
     case "line":
     drawLine(data, groupValue, xValue, yValue)
