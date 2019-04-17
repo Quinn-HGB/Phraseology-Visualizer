@@ -107,30 +107,30 @@ $(document).ready(function() {
          $('#y-axis option[value=medTime]').prop("disabled", true);
          $('#y-axis option[value=comTime]').prop("disabled", true);
       }
-      
+
   });
 });
-     
 
 
-class DayAverage{
+
+class DayAverage {
   constructor(cycles) {
     this.date = new Date(cycles[0].date);
     this.time = this.date.getTime();
-    this.read = Math.round(cycles.map(cycle => cycle.read).reduce(getSum)/cycles.length*100)/100;
-    this.norm = Math.round(cycles.map(cycle => cycle.norm).reduce(getSum)/cycles.length*100)/100;
-    this.correct = Math.round(cycles.map(cycle => cycle.correct).reduce(getSum)/cycles.length*100)/100;
-    this.suspense = Math.round(cycles.map(cycle => cycle.suspense).reduce(getSum)/cycles.length*100)/100;
-    this.easy = Math.round(cycles.map(cycle => cycle.easy).reduce(getSum)/cycles.length*100)/100;
-    this.med = Math.round(cycles.map(cycle => cycle.med).reduce(getSum)/cycles.length*100)/100;
-    this.com = Math.round(cycles.map(cycle => cycle.com).reduce(getSum)/cycles.length*100)/100;
-    this.easyTime = Math.round(cycles.map(cycle => cycle.easyTime).reduce(getSum)/cycles.length*100)/100;
-    this.medTime = Math.round(cycles.map(cycle => cycle.medTime).reduce(getSum)/cycles.length*100)/100;
-    this.comTime = Math.round(cycles.map(cycle => cycle.comTime).reduce(getSum)/cycles.length*100)/100;
-    this.correctRate = Math.round(this.correct/this.norm*10000)/100;
-    this.easyPercentage = Math.round(this.easy/this.norm*10000)/100;
-    this.medPercentage = Math.round(this.med/this.norm*10000)/100;
-    this.comPercentage = Math.round(this.com/this.norm*10000)/100;
+    this.read = Math.round(cycles.map(cycle => cycle.read).reduce(getSum) / cycles.length * 100) / 100;
+    this.norm = Math.round(cycles.map(cycle => cycle.norm).reduce(getSum) / cycles.length * 100) / 100;
+    this.correct = Math.round(cycles.map(cycle => cycle.correct).reduce(getSum) / cycles.length * 100) / 100;
+    this.suspense = Math.round(cycles.map(cycle => cycle.suspense).reduce(getSum) / cycles.length * 100) / 100;
+    this.easy = Math.round(cycles.map(cycle => cycle.easy).reduce(getSum) / cycles.length * 100) / 100;
+    this.med = Math.round(cycles.map(cycle => cycle.med).reduce(getSum) / cycles.length * 100) / 100;
+    this.com = Math.round(cycles.map(cycle => cycle.com).reduce(getSum) / cycles.length * 100) / 100;
+    this.easyTime = Math.round(cycles.map(cycle => cycle.easyTime).reduce(getSum) / cycles.length * 100) / 100;
+    this.medTime = Math.round(cycles.map(cycle => cycle.medTime).reduce(getSum) / cycles.length * 100) / 100;
+    this.comTime = Math.round(cycles.map(cycle => cycle.comTime).reduce(getSum) / cycles.length * 100) / 100;
+    this.correctRate = Math.round(this.correct / this.norm * 10000) / 100;
+    this.easyPercentage = Math.round(this.easy / this.norm * 10000) / 100;
+    this.medPercentage = Math.round(this.med / this.norm * 10000) / 100;
+    this.comPercentage = Math.round(this.com / this.norm * 10000) / 100;
   }
 }
 
@@ -149,10 +149,10 @@ class Day {
     this.easyTime = cycles.map(cycle => cycle.easyTime).reduce(getSum);
     this.medTime = cycles.map(cycle => cycle.medTime).reduce(getSum);
     this.comTime = cycles.map(cycle => cycle.comTime).reduce(getSum);
-    this.correctRate = Math.round(this.correct/this.norm*10000)/100;
-    this.easyPercentage = Math.round(this.easy/this.norm*10000)/100;
-    this.medPercentage = Math.round(this.med/this.norm*10000)/100;
-    this.comPercentage = Math.round(this.com/this.norm*10000)/100;
+    this.correctRate = Math.round(this.correct / this.norm * 10000) / 100;
+    this.easyPercentage = Math.round(this.easy / this.norm * 10000) / 100;
+    this.medPercentage = Math.round(this.med / this.norm * 10000) / 100;
+    this.comPercentage = Math.round(this.com / this.norm * 10000) / 100;
   }
 }
 
@@ -171,12 +171,12 @@ function restructureData(data, key, isAverage) {
     })
     .entries(data);
   if (key === "date") {
-    if(isAverage){
+    if (isAverage) {
       dataGroup = [{
         key: "Average",
         values: dataGroup.map(o => new DayAverage(o.values))
       }]
-    } else{
+    } else {
       dataGroup = [{
         key: "Total",
         values: dataGroup.map(o => new Day(o.values))
@@ -220,16 +220,19 @@ function getData() {
 }
 
 function drawGraph(data, groupValue, xValue, yValue, chartValue) {
-  switch(chartValue) {
+  switch (chartValue) {
     case "line":
-    drawLine(data, groupValue, xValue, yValue)
-    break;
+      drawLine(data, groupValue, xValue, yValue)
+      break;
     case "scatter":
-    drawScatter(data, groupValue, xValue, yValue)
-    break;
+      drawScatter(data, groupValue, xValue, yValue)
+      break;
     case "bar":
-    drawBar(data, groupValue, xValue, yValue);
-    break;
+      drawBar(data, groupValue, xValue, yValue);
+      break;
+    case "lfg":
+      initLFG(data);
+      break;
   }
 }
 
