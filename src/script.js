@@ -91,10 +91,9 @@ $(document).ready(function() {
          $('#y-axis option[value=medTime]').prop("disabled", true);
          $('#y-axis option[value=comTime]').prop("disabled", true);
       }
-      
+
   });
 });
-     
 
 
 function restructureData(data, key, isAverage) {
@@ -104,12 +103,12 @@ function restructureData(data, key, isAverage) {
     })
     .entries(data);
   if (key === "date") {
-    if(isAverage){
+    if (isAverage) {
       dataGroup = [{
         key: "Average",
         values: dataGroup.map(o => new DayAverage(o.values))
       }]
-    } else{
+    } else {
       dataGroup = [{
         key: "Total",
         values: dataGroup.map(o => new Day(o.values))
@@ -153,16 +152,19 @@ function getData() {
 }
 
 function drawGraph(data, groupValue, xValue, yValue, chartValue) {
-  switch(chartValue) {
+  switch (chartValue) {
     case "line":
-    drawLine(data, groupValue, xValue, yValue)
-    break;
+      drawLine(data, groupValue, xValue, yValue)
+      break;
     case "scatter":
-    drawScatter(data, groupValue, xValue, yValue)
-    break;
+      drawScatter(data, groupValue, xValue, yValue)
+      break;
     case "bar":
-    drawBar(data, groupValue, xValue, yValue);
-    break;
+      drawBar(data, groupValue, xValue, yValue);
+      break;
+    case "lfg":
+      initLFG(data);
+      break;
   }
 }
 
