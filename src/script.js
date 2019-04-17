@@ -7,22 +7,24 @@ var yGlobal = undefined;
 $(document).ready(function () {
   getData();
   $("#graph").click(function () {
-    getData().then(()=>{
-    d3.selectAll("svg > *").remove();
-    var groupForm = document.getElementById("group");
-    var xForm = document.getElementById("x-axis");
-    var yForm = document.getElementById("y-axis");
-    var chartType = document.getElementById("chartType");
-    var groupValue = groupForm.options[groupForm.selectedIndex].value;
-    var xValue = xForm.options[xForm.selectedIndex].value;
-    var yValue = yForm.options[yForm.selectedIndex].value;
-    var chartValue = chartType.options[chartType.selectedIndex].value;
-    drawGraph(sheetData.cycles, groupValue, xValue, yValue, chartValue);
-  })});
+    getData().then(() => {
+      d3.selectAll("svg > *").remove();
+      var groupForm = document.getElementById("group");
+      var xForm = document.getElementById("x-axis");
+      var yForm = document.getElementById("y-axis");
+      var chartType = document.getElementById("chartType");
+      var groupValue = groupForm.options[groupForm.selectedIndex].value;
+      var xValue = xForm.options[xForm.selectedIndex].value;
+      var yValue = yForm.options[yForm.selectedIndex].value;
+      var chartValue = chartType.options[chartType.selectedIndex].value;
+      drawGraph(sheetData.cycles, groupValue, xValue, yValue, chartValue);
+    })
+  });
 });
-$(document).ready(function() {
+$(document).ready(function () {
   $('#controls').change(function () {
     $('option').prop("disabled", false);
+    $('option[value=acc]').prop("disabled", true);
     switch ($('#x-axis option:selected').text()) {
       case "Cluster":
         $('#chartType option[value=line]').prop("disabled", true);
@@ -54,13 +56,13 @@ $(document).ready(function() {
       default:
         console.log("something's wrong");
         break;
-      }
+    }
     switch ($('#y-axis option:selected').text()) {
       case "Easy Medium Complex":
       case "Easy Medium Complex Percent":
       case "Easy Medium Complex Avg Time":
-          $('#chartType option').prop("disabled", true);
-          $('#chartType option[value=bar]').prop("disabled", false);
+        $('#chartType option').prop("disabled", true);
+        $('#chartType option[value=bar]').prop("disabled", false);
         break;
       case "Normalized":
       case "Read":
@@ -76,63 +78,66 @@ $(document).ready(function() {
       case "Suspense":
       case "Correct":
       case "Correct Rate":
-          $('#x-axis option[value=cluster]').prop("disabled", true);
-          $('#chartType option[value=bar]').prop("disabled", true);
-          $('#chartType option[value=lfg]').prop("disabled", true);
+        $('#x-axis option[value=cluster]').prop("disabled", true);
+        $('#chartType option[value=bar]').prop("disabled", true);
+        $('#chartType option[value=lfg]').prop("disabled", true);
       default:
-          $('option').show();
-      }
-      switch($('#chartType option:selected').text()) {
-         case "Line":
-         case "Scatter":
-         $('option[value=cluster]').prop("disabled", true);
-         $('option[value=diff]').prop("disabled", true);
-         $('option[value=diffPercent]').prop("disabled", true);
-         $('option[value=diffAverage]').prop("disabled", true);
-         break;
-         case "Bar":
-         $('option[value=cycles]').prop("disabled", true);
-         $('option[value=date]').prop("disabled", true);
-         $('#y-axis option[value=norm]').prop("disabled", true);
-         $('#y-axis option[value=read]').prop("disabled", true);
-         $('#y-axis option[value=correct]').prop("disabled", true);
-         $('#y-axis option[value=suspense]').prop("disabled", true);
-         $('#y-axis option[value=correctRate]').prop("disabled", true);
-         $('#y-axis option[value=easy]').prop("disabled", true);
-         $('#y-axis option[value=med]').prop("disabled", true);
-         $('#y-axis option[value=com]').prop("disabled", true);
-         $('#y-axis option[value=easyPercentage]').prop("disabled", true);
-         $('#y-axis option[value=medPercentage]').prop("disabled", true);
-         $('#y-axis option[value=comPercentage]').prop("disabled", true);
-         $('#y-axis option[value=easyTime]').prop("disabled", true);
-         $('#y-axis option[value=medTime]').prop("disabled", true);
-         $('#y-axis option[value=comTime]').prop("disabled", true);
-         break;
-         case "Guage":
-         $('option[value=cycles]').prop("disabled", true);
-         $('option[value=date]').prop("disabled", true);
-         $('#y-axis option[value=norm]').prop("disabled", true);
-         $('#y-axis option[value=read]').prop("disabled", true);
-         $('#y-axis option[value=correct]').prop("disabled", true);
-         $('#y-axis option[value=suspense]').prop("disabled", true);
-         $('#y-axis option[value=correctRate]').prop("disabled", true);
-         $('#y-axis option[value=easy]').prop("disabled", true);
-         $('#y-axis option[value=med]').prop("disabled", true);
-         $('#y-axis option[value=com]').prop("disabled", true);
-         $('#y-axis option[value=easyPercentage]').prop("disabled", true);
-         $('#y-axis option[value=medPercentage]').prop("disabled", true);
-         $('#y-axis option[value=comPercentage]').prop("disabled", true);
-         $('#y-axis option[value=easyTime]').prop("disabled", true);
-         $('#y-axis option[value=medTime]').prop("disabled", true);
-         $('#y-axis option[value=comTime]').prop("disabled", true);
-         $('option[value=cluster]').prop("disabled", true);
-         $('option[value=diff]').prop("disabled", true);
-         $('option[value=diffPercent]').prop("disabled", true);
-         $('option[value=diffAverage]').prop("disabled", true);
-         $('#group option[value=aggregate]').prop("disabled", true);
-         $('#group option[value=average]').prop("disabled", true);
-
-      }
+        $('option').show();
+    }
+    switch ($('#chartType option:selected').text()) {
+      case "Line":
+      case "Scatter":
+        $('option[value=cluster]').prop("disabled", true);
+        $('option[value=diff]').prop("disabled", true);
+        $('option[value=diffPercent]').prop("disabled", true);
+        $('option[value=diffAverage]').prop("disabled", true);
+        break;
+      case "Bar":
+        $('option[value=cycles]').prop("disabled", true);
+        $('option[value=date]').prop("disabled", true);
+        $('#y-axis option[value=norm]').prop("disabled", true);
+        $('#y-axis option[value=read]').prop("disabled", true);
+        $('#y-axis option[value=correct]').prop("disabled", true);
+        $('#y-axis option[value=suspense]').prop("disabled", true);
+        $('#y-axis option[value=correctRate]').prop("disabled", true);
+        $('#y-axis option[value=easy]').prop("disabled", true);
+        $('#y-axis option[value=med]').prop("disabled", true);
+        $('#y-axis option[value=com]').prop("disabled", true);
+        $('#y-axis option[value=easyPercentage]').prop("disabled", true);
+        $('#y-axis option[value=medPercentage]').prop("disabled", true);
+        $('#y-axis option[value=comPercentage]').prop("disabled", true);
+        $('#y-axis option[value=easyTime]').prop("disabled", true);
+        $('#y-axis option[value=medTime]').prop("disabled", true);
+        $('#y-axis option[value=comTime]').prop("disabled", true);
+        break;
+      case "Guage":
+        $('option[value=acc]').prop("disabled", false);
+        $('option[value=acc]').prop("selected", true);
+        $('option[value=cycles]').prop("disabled", true);
+        $('option[value=date]').prop("disabled", true);
+        $('#y-axis option[value=norm]').prop("disabled", true);
+        $('#y-axis option[value=read]').prop("disabled", true);
+        $('#y-axis option[value=correct]').prop("disabled", true);
+        $('#y-axis option[value=suspense]').prop("disabled", true);
+        $('#y-axis option[value=correctRate]').prop("disabled", true);
+        $('#y-axis option[value=easy]').prop("disabled", true);
+        $('#y-axis option[value=med]').prop("disabled", true);
+        $('#y-axis option[value=com]').prop("disabled", true);
+        $('#y-axis option[value=easyPercentage]').prop("disabled", true);
+        $('#y-axis option[value=medPercentage]').prop("disabled", true);
+        $('#y-axis option[value=comPercentage]').prop("disabled", true);
+        $('#y-axis option[value=easyTime]').prop("disabled", true);
+        $('#y-axis option[value=medTime]').prop("disabled", true);
+        $('#y-axis option[value=comTime]').prop("disabled", true);
+        $('option[value=cluster]').prop("disabled", true);
+        $('option[value=diff]').prop("disabled", true);
+        $('option[value=diffPercent]').prop("disabled", true);
+        $('option[value=diffAverage]').prop("disabled", true);
+        $('#group option[value=aggregate]').prop("disabled", true);
+        $('#group option[value=average]').prop("disabled", true);
+        $('#y-axis option[value=default]').prop("disabled", true);
+        $('#x-axis option[value=default]').prop("disabled", true);
+    }
 
   });
 });

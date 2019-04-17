@@ -1,9 +1,4 @@
-class person {
-    correct;
-    norm;
-    percent;
-    size;
-}
+
 
 
 
