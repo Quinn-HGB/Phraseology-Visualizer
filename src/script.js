@@ -69,6 +69,10 @@ $(document).ready(function() {
          case "Line":
          case "Scatter":
          $('option[value=cluster]').prop("disabled", true);
+         $('option[value=diff]').prop("disabled", true);
+         $('option[value=diffPercent]').prop("disabled", true);
+         $('option[value=diffAverage]').prop("disabled", true);
+         break;
          case "Bar":
          $('option[value=cycles]').prop("disabled", true);
          $('option[value=date]').prop("disabled", true);
