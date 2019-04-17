@@ -61,7 +61,7 @@ $(document).ready(function() {
       break;
       case "Select Y-Axis Data":
           $("#x-axis option").prop("disabled", false);
-          $("#chartType option").prop("disabled", false);
+
       default:
           $('option').show();
       }
