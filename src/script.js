@@ -72,6 +72,20 @@ $(document).ready(function() {
          case "Bar":
          $('option[value=cycles]').prop("disabled", true);
          $('option[value=date]').prop("disabled", true);
+         $('#y-axis option[value=norm]').prop("disabled", true);
+         $('#y-axis option[value=read]').prop("disabled", true);
+         $('#y-axis option[value=correct]').prop("disabled", true);
+         $('#y-axis option[value=suspense]').prop("disabled", true);
+         $('#y-axis option[value=correctRate]').prop("disabled", true);
+         $('#y-axis option[value=easy]').prop("disabled", true);
+         $('#y-axis option[value=med]').prop("disabled", true);
+         $('#y-axis option[value=com]').prop("disabled", true);
+         $('#y-axis option[value=easyPercentage]').prop("disabled", true);
+         $('#y-axis option[value=medPercentage]').prop("disabled", true);
+         $('#y-axis option[value=comPercentage]').prop("disabled", true);
+         $('#y-axis option[value=easyTime]').prop("disabled", true);
+         $('#y-axis option[value=medTime]').prop("disabled", true);
+         $('#y-axis option[value=comTime]').prop("disabled", true);
       }
   });
 });
