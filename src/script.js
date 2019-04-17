@@ -18,42 +18,52 @@ $(document).ready(function () {
     var chartValue = chartType.options[chartType.selectedIndex].value;
     drawGraph(sheetData.cycles, groupValue, xValue, yValue, chartValue);
   });
-  $(document).ready(function() {
-
-     $('#x-axis').change(function () {
-      $('option').prop("disabled", false);
-       switch ($('#x-axis option:selected').text()) {
-        case "Cluster":
-          $('#chartType option[value=line]').prop("disabled", true);
-          $('#chartType option[value=scatter]').prop("disabled", true);
-          $('#y-axis option[value=easy]').prop("disabled", true);
-          $('#y-axis option[value=med]').prop("disabled", true);
-          $('#y-axis option[value=com]').prop("disabled", true);
-          $('#y-axis option[value=easyPercentage]').prop("disabled", true);
-          $('#y-axis option[value=medPercentage]').prop("disabled", true);
-          $('#y-axis option[value=comPercentage]').prop("disabled", true);
-          $('#y-axis option[value=easyTime]').prop("disabled", true);
-          $('#y-axis option[value=medTime]').prop("disabled", true);
-          $('#y-axis option[value=comTime]').prop("disabled", true);
+});
+$(document).ready(function() {
+  $('#controls').change(function () {
+    $('option').prop("disabled", false);
+    switch ($('#x-axis option:selected').text()) {
+      case "Cluster":
+        $('#chartType option[value=line]').prop("disabled", true);
+        $('#chartType option[value=scatter]').prop("disabled", true);
+        $('#y-axis option[value=easy]').prop("disabled", true);
+        $('#y-axis option[value=med]').prop("disabled", true);
+        $('#y-axis option[value=com]').prop("disabled", true);
+        $('#y-axis option[value=easyPercentage]').prop("disabled", true);
+        $('#y-axis option[value=medPercentage]').prop("disabled", true);
+        $('#y-axis option[value=comPercentage]').prop("disabled", true);
+        $('#y-axis option[value=easyTime]').prop("disabled", true);
+        $('#y-axis option[value=medTime]').prop("disabled", true);
+        $('#y-axis option[value=comTime]').prop("disabled", true);
+        break;
+      case "Date":
+      case "Cycle":
+        $('#chartType option[value=bar]').prop("disabled", true);
+        $('option[value=diff]').prop("disabled", true);
+        $('option[value=diffPercent]').prop("disabled", true);
+        $('option[value=diffAverage]').prop("disabled", true);
+        break;
+      default:
+        console.log("something's wrong");
+        break;
+      }
+      switch ($('#y-axis option:selected').text()) {
+        case "Easy Medium Complex":
+        case "Easy Medium Complex Percent":
+        case "Easy Medium Complex Avg Time":
+          $("#chartType option").prop("disabled", true);
+          $("#chartType option[value=bar]").prop("disabled", false);
           break;
-        case "Date":
-        case "Cycle":
-          $('#chartType option[value=bar]').prop("disabled", true);
-          break;
-        default:
-          console.log("something's wrong");
-       }
-      });
-     $('#y-axis').change(function () {
-       $('option').prop("disabled", false);
-       switch ($('#y-axis option:selected').text()) {
-
+        case "Select Y-Axis Data":
+          $("#x-axis option").prop("disabled", false);
+          $("#chartType option").prop("disabled", false);
         default:
           $('option').show();
-       }
-      });
+      }
   });
 });
+     
+
 
 class DayAverage{
   constructor(cycles) {
