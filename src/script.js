@@ -35,6 +35,11 @@ $(document).ready(function() {
         $('#y-axis option[value=easyTime]').prop("disabled", true);
         $('#y-axis option[value=medTime]').prop("disabled", true);
         $('#y-axis option[value=comTime]').prop("disabled", true);
+        $('#y-axis option[value=norm]').prop("disabled", true);
+        $('#y-axis option[value=read]').prop("disabled", true);
+        $('#y-axis option[value=correct]').prop("disabled", true);
+        $('#y-axis option[value=suspense]').prop("disabled", true);
+        $('#y-axis option[value=correctRate]').prop("disabled", true);
         break;
       case "Date":
       case "Cycle":
@@ -47,18 +52,26 @@ $(document).ready(function() {
         console.log("something's wrong");
         break;
       }
-      switch ($('#y-axis option:selected').text()) {
-        case "Easy Medium Complex":
-        case "Easy Medium Complex Percent":
-        case "Easy Medium Complex Avg Time":
+    switch ($('#y-axis option:selected').text()) {
+      case "Easy Medium Complex":
+      case "Easy Medium Complex Percent":
+      case "Easy Medium Complex Avg Time":
           $("#chartType option").prop("disabled", true);
           $("#chartType option[value=bar]").prop("disabled", false);
-          break;
-        case "Select Y-Axis Data":
+      break;
+      case "Select Y-Axis Data":
           $("#x-axis option").prop("disabled", false);
           $("#chartType option").prop("disabled", false);
-        default:
+      default:
           $('option').show();
+      }
+      switch($('#chartType option:selected').text()) {
+         case "Line":
+         case "Scatter":
+         $('option[value=cluster]').prop("disabled", true);
+         case "Bar":
+         $('option[value=cycles]').prop("disabled", true);
+         $('option[value=date]').prop("disabled", true);
       }
   });
 });
@@ -145,7 +158,7 @@ function getTitle(label) {
     case "cycles": return "Cycle";
     case "cluster": return "Name";
     case "read": return "Emails Read";
-    case "norm": 
+    case "norm": return "Emails Normalized"
     case "diff": return "Emails Normalized";
     case "easy": return "Easy Emails Normalized";
     case "med": return "Medium Emails Normalized";
