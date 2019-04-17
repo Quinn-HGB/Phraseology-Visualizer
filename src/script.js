@@ -91,6 +91,7 @@ $(document).ready(function() {
          $('#y-axis option[value=medTime]').prop("disabled", true);
          $('#y-axis option[value=comTime]').prop("disabled", true);
       }
+      
   });
 });
      
