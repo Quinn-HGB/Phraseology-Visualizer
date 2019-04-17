@@ -7,6 +7,7 @@ var yGlobal = undefined;
 $(document).ready(function () {
   getData();
   $("#graph").click(function () {
+    getData().then(()=>{
     d3.selectAll("svg > *").remove();
     var groupForm = document.getElementById("group");
     var xForm = document.getElementById("x-axis");
@@ -17,7 +18,7 @@ $(document).ready(function () {
     var yValue = yForm.options[yForm.selectedIndex].value;
     var chartValue = chartType.options[chartType.selectedIndex].value;
     drawGraph(sheetData.cycles, groupValue, xValue, yValue, chartValue);
-  });
+  })});
 });
 $(document).ready(function() {
   $('#controls').change(function () {
@@ -145,9 +146,10 @@ function getTitle(label) {
   }
 }
 
-function getData() {
+async function getData() {
   $.get("http://localhost:8000/api/getdata", function (data, err) {
     sheetData = data;
+    console.log(data);
   });
 }
 
