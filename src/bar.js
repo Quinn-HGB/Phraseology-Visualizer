@@ -1,8 +1,13 @@
+// Last element in each array is being changed into an incorrect type, due to pointers
+
 function drawBar(data, key, xVar, yVar) {
     var isAverage = key==="average"? true:false,
       key = key==="average" ? "date": key,
-      dataGroup = restructureData(data, key,isAverage);
-      dataGroup.forEach(function(d, i) {
+      dataGroup = restructureData(data, key, isAverage);
+      console.log(dataGroup);
+      var dataGroupClone = dataGroup;
+      dataGroupClone.forEach(function(d, i) {
+        var temp = d.values.slice();
         var largestTime = 0;
         for (var j = 0; j < d.values.length; j++) {
           if (d.values[j].time > largestTime) {
@@ -11,10 +16,14 @@ function drawBar(data, key, xVar, yVar) {
         }
         for (var k in d.values) {
           if (d.values[k].time < largestTime) {
-            delete d.values[k];
+            for (var i = 0; i < temp.length; i++) {
+              if (temp[i].time == d.values[k].time) {
+                temp.splice(i, 1);
+              }
+            }
           }
         }
-        d.values = d.values.slice(d.values.length - 1);
+        d.values = temp;
         var first;
         var second;
         var third;
@@ -43,15 +52,15 @@ function drawBar(data, key, xVar, yVar) {
             delete d.values[0][key];
           }
         }
-        var temp = new Array(3);
+        var tmp = new Array(3);
         var index = 0;
         for (var key in d.values[0]) {
-          temp[index] = d.values[0][key];
+          tmp[index] = d.values[0][key];
           index++;
         }
-        d.values = temp;
+        d.values = tmp;
       });
-      console.log(dataGroup);
+      console.log(dataGroupClone);
       var xTitle = getTitle(xVar),
       yTitle = getTitle(yVar),
       vis = d3.select("#visualization"),
@@ -77,7 +86,7 @@ function drawBar(data, key, xVar, yVar) {
       yScale = d3.scaleLinear()
         .range([HEIGHT - MARGINS.top, 10])
         .domain([0, 60]),
-      xAxis = d3.axisBottom(xScale0),
+      xAxis = d3.axisBottom(xScale0).tickFormat(d => dataGroupClone[d].key),
       yAxis = d3.axisLeft()
       .scale(yScale),
       //console.log(dataGroup);
@@ -115,7 +124,7 @@ function drawBar(data, key, xVar, yVar) {
     console.log(dataGroup);
 
     var z = d3.scaleOrdinal()
-      .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+      .range(["#98abc5", "#ff8c00", "#a05d56"]);
 
     // var colored = colors[i];
     // console.log(d.values);
@@ -141,9 +150,8 @@ function drawBar(data, key, xVar, yVar) {
     //     return yScale(d[yVar]);
     //   })
     vis.selectAll('bar')
-      .data(dataGroup)
+      .data(dataGroupClone)
     .enter().append('g')
-      .style("fill", function(d, i) { return z(i); })
       .attr("transform", function(d, i) {
         console.log(d);
         console.log(i);
@@ -155,6 +163,7 @@ function drawBar(data, key, xVar, yVar) {
       })
     .enter().append('rect')
       .style("opacity", 1)
+      .style("fill", function(d, i) { return z(i); })
       .attr("width", xScale1.bandwidth)
       .attr("x", function (d, i) {
         console.log(i);
@@ -170,55 +179,11 @@ function drawBar(data, key, xVar, yVar) {
       .on("mouseover", tipMouseover)
       .on("mousemove", tipMousemove)
       .on("mouseout", tipMouseout);
-    lSpace = HEIGHT / dataGroup.length;
-        // .on('click', function () {
-        //     var active = d.active ? false : true;
-        //     var opacity = active ? 0 : 1;
-        //     if (!opacity) {
-        //       console.log($(".value_" + d.key));
-        //       $(".value_" + d.key).remove();
-        //     } else {
-        //       vis.selectAll("rectangle")
-        //         .data(d.values)
-        //       .enter().append("rect")
-        //         .style("fill", colored)
-        //         .attr('class', 'value_' + d.key)
-        //         .style("opacity", 1)
-        //         .attr("x", function (d, i) {
-        //           return xScale0(i);
-        //         })
-        //         .attr("height", function (d) {
-        //           return HEIGHT - MARGINS.bottom - 10 - yScale(d[yVar]);
-        //         })
-        //         .attr("width", 30)
-        //         .attr("y", function (d) {
-        //           return yScale(d[yVar]);
-        //         })
-        //         .on("mouseover", tipMouseover)
-        //         .on("mousemove", tipMousemove)
-        //         .on("mouseout", tipMouseout);
-        //       }
-
-        //     d.active = active;
-        // });
-
+    lSpace = HEIGHT / dataGroupClone.length;
 
     function tipMouseover(d, i) {
-      if (key != "date") {
-        var id = "#value_" + d[key];
-        var circ = d3.selectAll(id);
-        for (var j = 0; j < circ._groups[0].length; j++) {
-          if (circ._groups[0][j].style.opacity == 0) {
-            return;
-          }
-        }
-      }
-      timestamp = new Date(d.time);
-      console.log(d[yVar]);
       tooltip
-        .html((key == "date" ? "" : d[key] + "<br/>")
-        + ((xVar === "date") ? "Date: <b>" + timestamp.toLocaleDateString("en-US") + "</b>":
-        "Cycle <b>" + i + "</b>") + ", <b>" + Math.round(d[yVar]) +
+        .html("<b>" + Math.round(d) +
         "</b>" + " " + yTitle)
         .style("left", (d3.event.pageX + 5) + "px")
         .style("top", (d3.event.pageY - 45) + "px")
