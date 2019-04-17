@@ -9,31 +9,35 @@ class person {
 
 var names = ["Quinn", "Jonah", "Emily", "Alan", "Alishba", "Evan"]
 var lfgData = {}
+var total;
 //{correct: 0, norm: 0, percent: 0}
-names.forEach(name => {
-    lfgData[name] = { correct: 0, norm: 0, percent: 0, count: 0, easy: 0, medium: 0, com: 0, options: {} }
-})
+
 
 function initLFG(data) {
 
+    names.forEach(name => {
+        lfgData[name] = { correct: 0, norm: 0, percent: 0, count: 0, easy: 0, medium: 0, com: 0, easyC: 0, mediumC: 0, comC: 0, options: {} }
+    })
 
-    let total = 0;
+    total = 0;
     let size = 800;
     data.forEach(cycle => {
+
         lfgData[cycle.name]["correct"] += cycle.correctRate;
         lfgData[cycle.name]["norm"] += cycle.norm;
-        lfgData[cycle.name]["easy"] += cycle.easyPercentage;
-        lfgData[cycle.name]["medium"] += cycle.medPercentage;
-        lfgData[cycle.name]["com"] += cycle.comPercentage;
+        lfgData[cycle.name]["easyC"] += cycle.easyCorrect;
+        lfgData[cycle.name]["mediumC"] += cycle.medCorrect;
+        lfgData[cycle.name]["comC"] += cycle.comCorrect;
+        lfgData[cycle.name]["easy"] += cycle.easy;
+        lfgData[cycle.name]["medium"] += cycle.med;
+        lfgData[cycle.name]["com"] += cycle.com;
         lfgData[cycle.name]["name"] = cycle.name;
         lfgData[cycle.name]["count"]++
+
     });
     let max = 0;
     names.forEach(name => {
         lfgData[name]["correct"] /= lfgData[name]["count"]
-        lfgData[name]["easy"] /= lfgData[name]["count"]
-        lfgData[name]["medium"] /= lfgData[name]["count"]
-        lfgData[name]["com"] /= lfgData[name]["count"]
         lfgData[name]['percent'] = lfgData[name]['correct'];
         total += lfgData[name]['norm'];
         if (max < lfgData[name]['norm'])
@@ -141,14 +145,27 @@ function __drawLFG() {
             .text(name)
 
 
-        var circle = vis.append("circle")
-            .style("fill", colored)
-            .attr("cx", WIDTH + 40)
-            .attr("cy", ((lSpace / 2) + i * lSpace / 5) - 5)
-            .attr("r", 7);
+
         if (i < 6) {
             var circle = vis.append("circle")
+                .style("fill", colored)
+                .attr("cx", WIDTH + 40)
+                .attr("cy", ((lSpace / 2) + i * lSpace / 5) - 5)
+                .attr("r", 7);
+            var circle = vis.append("circle")
                 .style("fill", "#ffffff")
+                .attr("cx", WIDTH + 40)
+                .attr("cy", ((lSpace / 2) + i * lSpace / 5) - 5)
+                .attr("r", 4);
+        }
+        else {
+            var circle = vis.append("circle")
+                .style("fill", "#ffffff")
+                .attr("cx", WIDTH + 40)
+                .attr("cy", ((lSpace / 2) + i * lSpace / 5) - 5)
+                .attr("r", 7);
+            var circle = vis.append("circle")
+                .style("fill", colored)
                 .attr("cx", WIDTH + 40)
                 .attr("cy", ((lSpace / 2) + i * lSpace / 5) - 5)
                 .attr("r", 4);
@@ -157,35 +174,31 @@ function __drawLFG() {
 }
 
 function cycleColor(name) {
+
     names.forEach(_name => {
-        if ( name !== _name)
-        {
+        if (name !== _name) {
             lfgData[_name]['options']['waveRise'] = false;
             lfgData[_name]['options']['valueCountUp'] = false;
         }
-        else
-        {
+        else {
             lfgData[_name]['options']['waveRise'] = true;
             lfgData[_name]['options']['valueCountUp'] = true;
         }
     })
-    if (lfgData[name]['options']["waveColor"] === "#7EC0EE")
-    {
+    if (lfgData[name]['options']["waveColor"] === "#7EC0EE") {
         lfgData[name]['options']["waveColor"] = "#00ff00" // easy
-        lfgData[name]["percent"] = lfgData[name]['easy']
+        lfgData[name]["percent"] = (lfgData[name]['easyC'] / lfgData[name]['easy']) * 100
     }
-    else if (lfgData[name]['options']["waveColor"] === "#00ff00")
-    {
+
+    else if (lfgData[name]['options']["waveColor"] === "#00ff00") {
         lfgData[name]['options']["waveColor"] = "#ffff00" // medium
-        lfgData[name]["percent"] = lfgData[name]['medium']
+        lfgData[name]["percent"] = (lfgData[name]['mediumC'] / lfgData[name]['medium']) * 100
     }
-    else if (lfgData[name]['options']["waveColor"] === "#ffff00")
-    {
+    else if (lfgData[name]['options']["waveColor"] === "#ffff00") {
         lfgData[name]['options']["waveColor"] = "#ff0000" // com
-        lfgData[name]["percent"] = lfgData[name]['com']
+        lfgData[name]["percent"] = (lfgData[name]['comC'] / lfgData[name]['com']) * 100
     }
-    else if (lfgData[name]['options']["waveColor"] === "#ff0000")
-    {
+    else if (lfgData[name]['options']["waveColor"] === "#ff0000") {
         lfgData[name]['options']["waveColor"] = "#7EC0EE" // tot
         lfgData[name]["percent"] = lfgData[name]['correct']
     }
