@@ -165,7 +165,6 @@ function getTitle(label) {
 async function getData() {
   $.get("http://localhost:8000/api/getdata", function (data, err) {
     sheetData = data;
-    console.log(data);
   });
 }
 
