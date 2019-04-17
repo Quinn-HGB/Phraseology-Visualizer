@@ -84,7 +84,7 @@ async function getData(auth) {
   await sheets.spreadsheets.values.get(
     {
       spreadsheetId: "1LKwvzwSWb3RjrjK6vG15Iyalv4ORzXdHrGSNm1Cipr4",
-      range: "Metrics!A2:M"
+      range: "Metrics!A2:P"
     },
     (err, res) => {
       if (err) return console.log("The API returned an error: " + err);
