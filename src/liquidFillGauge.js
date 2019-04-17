@@ -17,7 +17,7 @@
         maxValue: 100, // The gauge maximum value.
 
         // Styles
-        circleThickness: 0.05, // The outer circle thickness as a percentage of it's radius.
+        circleThickness: 0.15, // The outer circle thickness as a percentage of it's radius.
         circleFillGap: 0.05, // The size of the gap between the outer circle and wave circle as a percentage of the outer circles radius.
         circleColor: "#178BCA", // The color of the outer circle.
         backgroundColor: null, // The color of the background
@@ -32,16 +32,16 @@
         gradientToColor: "#000",
 
         // Waves
-        waveHeight: 0.155, // The wave height as a percentage of the radius of the wave circle.
-        waveCount: 5, // The number of full waves per width of the wave circle.
-        waveOffset: 0, // The amount to initially offset the wave. 0 = no offset. 1 = offset of one full wave.
+        waveHeight: 0.115, // The wave height as a percentage of the radius of the wave circle.
+        waveCount: 3, // The number of full waves per width of the wave circle.
+        waveOffset: 0.5, // The amount to initially offset the wave. 0 = no offset. 1 = offset of one full wave.
 
         // Animations
         waveRise: true, // Control if the wave should rise from 0 to it's full height, or start at it's full height.
-        waveRiseTime: 2000, // The amount of time in milliseconds for the wave to rise from 0 to it's final height.
+        waveRiseTime: 1000, // The amount of time in milliseconds for the wave to rise from 0 to it's final height.
         waveRiseAtStart: true, // If set to false and waveRise at true, will disable only the initial animation
         waveAnimate: true, // Controls if the wave scrolls or is static.
-        waveAnimateTime: 72000, // The amount of time in milliseconds for a full wave to enter the wave circle.
+        waveAnimateTime: 1500, // The amount of time in milliseconds for a full wave to enter the wave circle.
         waveHeightScaling: true, // Controls wave size scaling at low and high fill percentages. When true, wave height reaches it's maximum at 50% fill, and minimum at 0% and 100% fill. This helps to prevent the wave from making the wave circle from appear totally full or empty when near it's minimum or maximum fill.
         valueCountUp: true, // If true, the displayed value counts up from 0 to it's final value upon loading and updating. If false, the final value is displayed.
         valueCountUpAtStart: true, // If set to false and valueCountUp at true, will disable only the initial animation
@@ -146,7 +146,8 @@
 
             // Center the gauge within the parent
             var gaugeGroup = gauge.append("g")
-              .attr('transform', 'translate(' + locationX + ',' + locationY + ')');
+              .attr('transform', 'translate(' + locationX + ',' + locationY + ')')
+              .on('mousedown', () => cycleColor(config.get("name")));
             // Draw the background circle
             if (config.get("backgroundColor")) {
                 gaugeGroup.append("circle")
@@ -309,6 +310,7 @@
                 gauge.on("valueChanged", null);
                 gauge.on("destroy", null);
             });
+
         });
     };
 })(d3);

@@ -183,7 +183,7 @@ function drawGraph(data, groupValue, xValue, yValue, chartValue) {
       drawBar(data, groupValue, xValue, yValue);
       break;
     case "lfg":
-      drawLFG(data);
+      initLFG(data);
       break;
   }
 }
