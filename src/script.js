@@ -7,6 +7,7 @@ var yGlobal = undefined;
 $(document).ready(function () {
   getData();
   $("#graph").click(function () {
+    getData().then(()=>{
     d3.selectAll("svg > *").remove();
     var groupForm = document.getElementById("group");
     var xForm = document.getElementById("x-axis");
@@ -17,7 +18,7 @@ $(document).ready(function () {
     var yValue = yForm.options[yForm.selectedIndex].value;
     var chartValue = chartType.options[chartType.selectedIndex].value;
     drawGraph(sheetData.cycles, groupValue, xValue, yValue, chartValue);
-  });
+  })});
 });
 $(document).ready(function() {
   $('#controls').change(function () {
@@ -56,11 +57,27 @@ $(document).ready(function() {
       case "Easy Medium Complex":
       case "Easy Medium Complex Percent":
       case "Easy Medium Complex Avg Time":
-          $("#chartType option").prop("disabled", true);
-          $("#chartType option[value=bar]").prop("disabled", false);
-      break;
+          $('#chartType option').prop("disabled", true);
+          $('#chartType option[value=bar]').prop("disabled", false);
+        break;
+      case "Normalized":
+      case "Read":
+      case "Easy":
+      case "Medium":
+      case "Complex":
+      case "Percent Easy":
+      case "Percent Medium":
+      case "Percent Complex":
+      case "Average Time Easy":
+      case "Average Time Medium":
+      case "Average Time Complex":
+      case "Suspense":
+      case "Correct":
+      case "Correct Rate":
+          $('option[value=cluster]').prop("disabled", true);
+          $('#chartType option[value=bar]').prop("disabled", true);
       case "Select Y-Axis Data":
-          $("#x-axis option").prop("disabled", false);
+          $('#x-axis option').prop("disabled", false);
 
       default:
           $('option').show();
@@ -145,9 +162,10 @@ function getTitle(label) {
   }
 }
 
-function getData() {
+async function getData() {
   $.get("http://localhost:8000/api/getdata", function (data, err) {
     sheetData = data;
+    console.log(data);
   });
 }
 
