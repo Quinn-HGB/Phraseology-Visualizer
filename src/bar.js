@@ -128,14 +128,14 @@ function drawBar(data, key, xVar, yVar) {
       lSpace = HEIGHT / dataGroup.length;
       vis.append("text")
         .attr("x", WIDTH - 40)
-        .attr("y", (lSpace / 2) + i * lSpace/5)
+        .attr("y", (lSpace / 2) + i * lSpace/3)
         .style("fill", "black")
         .attr("class", "legend")
         .text(legend[i]);
       vis.append("circle")
         .style("fill", z(i))
         .attr("cx", WIDTH - 55)
-        .attr("cy", ((lSpace / 2) + i * lSpace/5) - 5)
+        .attr("cy", ((lSpace / 2) + i * lSpace/3) - 5)
         .attr("r", 7);
     }
 
