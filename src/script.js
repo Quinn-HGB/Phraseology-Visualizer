@@ -189,7 +189,7 @@ function getTitle(label) {
     case "easyPercentage": return "Percent Easy";
     case "medPercentage": return "Percent Medium";
     case "comPercentage": return "Percent Complex";
-    case "diffPercentage": return "Percent";
+    case "diffPercent": return "Percent";
     case "diffAverage": return "Seconds Taken Per Email";
     default: return "ERR: INCORRECT VAR GIVEN";
   }

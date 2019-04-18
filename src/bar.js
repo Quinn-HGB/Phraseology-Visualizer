@@ -1,6 +1,10 @@
 // Last element in each array is being changed into an incorrect type, due to pointers
 
 function drawBar(data, key, xVar, yVar) {
+    var first;
+    var second;
+    var third;
+    var legend = new Array("Easy", "Medium", "Complex");
     var isAverage = key==="average"? true:false,
       key = key==="average" ? "date": key,
       dataGroup = restructureData(data, key, isAverage);
@@ -23,9 +27,6 @@ function drawBar(data, key, xVar, yVar) {
           }
         }
         d.values = temp;
-        var first;
-        var second;
-        var third;
         switch(yVar) {
           case "diff":
             first = "easy";
@@ -123,6 +124,21 @@ function drawBar(data, key, xVar, yVar) {
     var z = d3.scaleOrdinal()
       .range(["#98abc5", "#ff8c00", "#a05d56"]);
 
+    for (var i = 0; i < legend.length; i++) {
+      lSpace = HEIGHT / dataGroup.length;
+      vis.append("text")
+        .attr("x", WIDTH - 40)
+        .attr("y", (lSpace / 2) + i * lSpace/5)
+        .style("fill", "black")
+        .attr("class", "legend")
+        .text(legend[i]);
+      vis.append("circle")
+        .style("fill", z(i))
+        .attr("cx", WIDTH - 55)
+        .attr("cy", ((lSpace / 2) + i * lSpace/5) - 5)
+        .attr("r", 7);
+    }
+
     vis.selectAll('bar')
       .data(dataGroup)
     .enter().append('g')
@@ -153,7 +169,6 @@ function drawBar(data, key, xVar, yVar) {
       .on("mouseover", tipMouseover)
       .on("mousemove", tipMousemove)
       .on("mouseout", tipMouseout);
-    lSpace = HEIGHT / dataGroup.length;
 
     function tipMouseover(d, i) {
       tooltip
