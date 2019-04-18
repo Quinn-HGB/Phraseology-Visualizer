@@ -122,7 +122,7 @@ function drawBar(data, key, xVar, yVar) {
       .text(yTitle);
 
     var z = d3.scaleOrdinal()
-      .range(["#98abc5", "#ff8c00", "#a05d56"]);
+      .range(["#138113", "#F9E800", "#FC0000"]);
 
     for (var i = 0; i < legend.length; i++) {
       lSpace = HEIGHT / dataGroup.length;
