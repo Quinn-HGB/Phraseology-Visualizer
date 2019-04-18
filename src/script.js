@@ -54,7 +54,6 @@ $(document).ready(function () {
         $('#chartType option[value=lfg]').prop("disabled", true);
         break;
       default:
-        console.log("something's wrong");
         break;
     }
     switch ($('#y-axis option:selected').text()) {
@@ -138,7 +137,10 @@ $(document).ready(function () {
         $('#y-axis option[value=default]').prop("disabled", true);
         $('#x-axis option[value=default]').prop("disabled", true);
     }
-
+    unselect("group");
+    unselect("x-axis");
+    unselect("y-axis");
+    unselect("chartType");
   });
 });
 
@@ -214,4 +216,11 @@ function drawGraph(data, groupValue, xValue, yValue, chartValue) {
       break;
   }
 }
-
+function unselect(selectId) {
+  $("#" + selectId + " option:selected").each(function() {
+    if ($(this).prop("disabled")) {
+      $(this).prop('selected', false);
+      $("#" + selectId + " option[value=default]").prop("selected", true);
+    }
+  });
+}
