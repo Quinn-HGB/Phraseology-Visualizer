@@ -8,7 +8,7 @@ function drawBar(data, key, xVar, yVar) {
     var isAverage = key==="average"? true:false,
       key = key==="average" ? "date": key,
       dataGroup = restructureData(data, key, isAverage);
-      console.log(dataGroup);
+      // console.log(dataGroup);
       dataGroup.forEach(function(d, i) {
         var temp = d.values.slice();
         var largestTime = 0;
@@ -143,8 +143,6 @@ function drawBar(data, key, xVar, yVar) {
       .data(dataGroup)
     .enter().append('g')
       .attr("transform", function(d, i) {
-        console.log(d);
-        console.log(i);
         return "translate(" + xScale0(i) + ",0)";
       })
     .selectAll('g')
@@ -156,11 +154,9 @@ function drawBar(data, key, xVar, yVar) {
       .style("fill", function(d, i) { return z(i); })
       .attr("width", xScale1.bandwidth)
       .attr("x", function (d, i) {
-        console.log(i);
         return xScale1(i);
       })
       .attr("height", function (d, i) {
-        console.log(d);
         return HEIGHT - MARGINS.bottom - 10 - yScale(d);
       })
       .attr("y", function (d) {
