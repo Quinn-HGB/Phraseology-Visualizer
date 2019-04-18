@@ -22,6 +22,7 @@ $(document).ready(function () {
   });
 });
 $(document).ready(function () {
+  $('option[value=acc]').prop("disabled", true);
   $('#controls').change(function () {
     $('option').prop("disabled", false);
     $('option[value=acc]').prop("disabled", true);
