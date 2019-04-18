@@ -134,7 +134,7 @@ function __drawLFG() {
         lSpace = HEIGHT / names.length + 20;
         vis.append("text")
             .attr("x", WIDTH + 50)
-            .attr("y", (lSpace / 2) + i * lSpace / 5)
+            .attr("y", (lSpace / 2) + i * lSpace / 4)
             .style("fill", "black")
             .attr("class", "legend")
             .text(name)
@@ -145,24 +145,24 @@ function __drawLFG() {
             var circle = vis.append("circle")
                 .style("fill", colored)
                 .attr("cx", WIDTH + 40)
-                .attr("cy", ((lSpace / 2) + i * lSpace / 5) - 5)
-                .attr("r", 7);
+                .attr("cy", ((lSpace / 2) + i * lSpace / 4) - 5)
+                .attr("r", 8);
             var circle = vis.append("circle")
                 .style("fill", "#ffffff")
                 .attr("cx", WIDTH + 40)
-                .attr("cy", ((lSpace / 2) + i * lSpace / 5) - 5)
+                .attr("cy", ((lSpace / 2) + i * lSpace / 4) - 5)
                 .attr("r", 4);
         }
         else {
             var circle = vis.append("circle")
                 .style("fill", "#ffffff")
                 .attr("cx", WIDTH + 40)
-                .attr("cy", ((lSpace / 2) + i * lSpace / 5) - 5)
-                .attr("r", 7);
+                .attr("cy", ((lSpace / 2) + i * lSpace / 4) - 5)
+                .attr("r", 8);
             var circle = vis.append("circle")
                 .style("fill", colored)
                 .attr("cx", WIDTH + 40)
-                .attr("cy", ((lSpace / 2) + i * lSpace / 5) - 5)
+                .attr("cy", ((lSpace / 2) + i * lSpace / 4) - 5)
                 .attr("r", 4);
         }
     });

@@ -6,94 +6,94 @@ function drawBar(data, key, xVar, yVar) {
     var third;
     var legend = new Array("Easy", "Medium", "Complex");
     var isAverage = key==="average"? true:false,
-      key = key==="average" ? "date": key,
-      dataGroup = restructureData(data, key, isAverage);
-      // console.log(dataGroup);
-      dataGroup.forEach(function(d, i) {
-        var temp = d.values.slice();
-        var largestTime = 0;
-        for (var j = 0; j < d.values.length; j++) {
-          if (d.values[j].time > largestTime) {
-            largestTime = d.values[j].time;
-          }
+    key = key==="average" ? "date": key,
+    dataGroup = restructureData(data, key, isAverage);
+    // console.log(dataGroup);
+    dataGroup.forEach(function(d, i) {
+      var temp = d.values.slice();
+      var largestTime = 0;
+      for (var j = 0; j < d.values.length; j++) {
+        if (d.values[j].time > largestTime) {
+          largestTime = d.values[j].time;
         }
-        for (var k in d.values) {
-          if (d.values[k].time < largestTime) {
-            for (var i = 0; i < temp.length; i++) {
-              if (temp[i].time == d.values[k].time) {
-                temp.splice(i, 1);
-              }
+      }
+      for (var k in d.values) {
+        if (d.values[k].time < largestTime) {
+          for (var i = 0; i < temp.length; i++) {
+            if (temp[i].time == d.values[k].time) {
+              temp.splice(i, 1);
             }
           }
         }
-        d.values = temp;
-        switch(yVar) {
-          case "diff":
-            first = "easy";
-            second = "med";
-            third = "com";
-            break;
-          case "diffPercent":
-            first = "easyPercentage";
-            second = "medPercentage";
-            third = "comPercentage";
-            break;
-          case "diffAverage":
-            first = "easyTime";
-            second = "medTime";
-            third = "comTime";
-            break;
-          default:
-            console.log('ERROR: INVALID BAR INPUT');
-            break;
+      }
+      d.values = temp;
+      switch(yVar) {
+        case "diff":
+          first = "easy";
+          second = "med";
+          third = "com";
+          break;
+        case "diffPercent":
+          first = "easyPercentage";
+          second = "medPercentage";
+          third = "comPercentage";
+          break;
+        case "diffAverage":
+          first = "easyTime";
+          second = "medTime";
+          third = "comTime";
+          break;
+        default:
+          console.log('ERROR: INVALID BAR INPUT');
+          break;
+      }
+      for (var key in d.values[0]) {
+        if (key != first && key != second && key != third) {
+          delete d.values[0][key];
         }
-        for (var key in d.values[0]) {
-          if (key != first && key != second && key != third) {
-            delete d.values[0][key];
-          }
-        }
-        var tmp = new Array(3);
-        var index = 0;
-        for (var key in d.values[0]) {
-          tmp[index] = d.values[0][key];
-          index++;
-        }
-        d.values = tmp;
-      });
-      var xTitle = getTitle(xVar),
-      yTitle = getTitle(yVar),
-      vis = d3.select("#visualization"),
-      w = window,
-      d = document,
-      e = d.documentElement,
-      g = d.getElementsByTagName('body')[0],
-      plot = d3.select("#plot"),
-      MARGINS = {
-        top: 50,
-        right: 100,
-        bottom: 40,
-        left: 60,
-      },
-      WIDTH = (plot.clientWidth || e.clientWidth || w.innerWidth || g.clientWidth) * (8 / 10)-MARGINS.right-MARGINS.left,
-      HEIGHT = (plot.clientHeight || e.clientHeight || w.innerHeight || g.clientHeight) * (8 / 10)-MARGINS.top-MARGINS.bottom,
-      xScale0 = d3.scaleBand()
-        .range([MARGINS.left, WIDTH - MARGINS.right])
-        .domain(d3.range(dataGroup.length)),
-      xScale1 = d3.scaleBand()
-        .domain(d3.range(3))
-        .range([0, xScale0.bandwidth() - 5]),
-      yScale = d3.scaleLinear()
-        .range([HEIGHT - MARGINS.top, 10])
-        .domain([0, d3.max(dataGroup, function(d) {
-          return Math.max.apply(Math, d.values);
-        })]),
-      xAxis = d3.axisBottom(xScale0).tickFormat(d => dataGroup[d].key),
-      yAxis = d3.axisLeft()
-      .scale(yScale),
-      tooltip = d3.select("body").append("div")
-          .attr("class", "tooltip")
-          .style("opacity", 0);
-
+      }
+      var tmp = new Array(3);
+      var index = 0;
+      for (var key in d.values[0]) {
+        tmp[index] = d.values[0][key];
+        index++;
+      }
+      d.values = tmp;
+    });
+    var xTitle = getTitle(xVar),
+    yTitle = getTitle(yVar),
+    vis = d3.select("#visualization"),
+    w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    plot = d3.select("#plot"),
+    MARGINS = {
+      top: 50,
+      right: 100,
+      bottom: 40,
+      left: 60,
+    },
+    WIDTH = (plot.clientWidth || e.clientWidth || w.innerWidth || g.clientWidth) * (8 / 10)-MARGINS.right-MARGINS.left,
+    HEIGHT = (plot.clientHeight || e.clientHeight || w.innerHeight || g.clientHeight) * (8 / 10)-MARGINS.top-MARGINS.bottom,
+    xScale0 = d3.scaleBand()
+      .range([MARGINS.left, WIDTH - MARGINS.right])
+      .domain(d3.range(dataGroup.length)),
+    xScale1 = d3.scaleBand()
+      .domain(d3.range(3))
+      .range([0, xScale0.bandwidth() - 5]),
+    yScale = d3.scaleLinear()
+      .range([HEIGHT - MARGINS.top, 10])
+      .domain([0, d3.max(dataGroup, function(d) {
+        return Math.max.apply(Math, d.values);
+      })]),
+    xAxis = d3.axisBottom(xScale0).tickFormat(d => dataGroup[d].key),
+    yAxis = d3.axisLeft()
+    .scale(yScale),
+    tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+        
     vis.append("svg:g")
       .attr("class", "axis")
       .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom - 10) + ")")
