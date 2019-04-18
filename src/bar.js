@@ -5,8 +5,7 @@ function drawBar(data, key, xVar, yVar) {
       key = key==="average" ? "date": key,
       dataGroup = restructureData(data, key, isAverage);
       console.log(dataGroup);
-      var dataGroupClone = dataGroup;
-      dataGroupClone.forEach(function(d, i) {
+      dataGroup.forEach(function(d, i) {
         var temp = d.values.slice();
         var largestTime = 0;
         for (var j = 0; j < d.values.length; j++) {
@@ -60,7 +59,6 @@ function drawBar(data, key, xVar, yVar) {
         }
         d.values = tmp;
       });
-      console.log(dataGroupClone);
       var xTitle = getTitle(xVar),
       yTitle = getTitle(yVar),
       vis = d3.select("#visualization"),
@@ -85,11 +83,12 @@ function drawBar(data, key, xVar, yVar) {
         .range([0, xScale0.bandwidth() - 5]),
       yScale = d3.scaleLinear()
         .range([HEIGHT - MARGINS.top, 10])
-        .domain([0, 60]),
-      xAxis = d3.axisBottom(xScale0).tickFormat(d => dataGroupClone[d].key),
+        .domain([0, d3.max(dataGroup, function(d) {
+          return Math.max.apply(Math, d.values);
+        })]),
+      xAxis = d3.axisBottom(xScale0).tickFormat(d => dataGroup[d].key),
       yAxis = d3.axisLeft()
       .scale(yScale),
-      //console.log(dataGroup);
       tooltip = d3.select("body").append("div")
           .attr("class", "tooltip")
           .style("opacity", 0);
@@ -121,36 +120,11 @@ function drawBar(data, key, xVar, yVar) {
       .style("font-weight", "bold")
       .text(yTitle);
 
-    console.log(dataGroup);
-
     var z = d3.scaleOrdinal()
       .range(["#98abc5", "#ff8c00", "#a05d56"]);
 
-    // var colored = colors[i];
-    // console.log(d.values);
-    // vis.selectAll('bar')
-    //   .data(d.values)
-    // .enter().append('g')
-    //   .style("fill", colored)
-    //   .attr("transform", function(d, i) {return "translate(" + xScale1(i) + ",0)"; })
-    // .selectAll("g")
-    //   .data(d.values)
-    // .enter().append("rect")
-    //   .attr("width", xScale1.bandwidth())
-    //   .attr('class', 'value_' + d.key)
-    //   .style("opacity", 1)
-    //   .attr("x", function (d, i) {
-    //     console.log(i);
-    //     return xScale0(i);
-    //   })
-    //   .attr("height", function (d) {
-    //     return HEIGHT - MARGINS.bottom - 10 - yScale(d[yVar]);
-    //   })
-    //   .attr("y", function (d) {
-    //     return yScale(d[yVar]);
-    //   })
     vis.selectAll('bar')
-      .data(dataGroupClone)
+      .data(dataGroup)
     .enter().append('g')
       .attr("transform", function(d, i) {
         console.log(d);
@@ -179,7 +153,7 @@ function drawBar(data, key, xVar, yVar) {
       .on("mouseover", tipMouseover)
       .on("mousemove", tipMousemove)
       .on("mouseout", tipMouseout);
-    lSpace = HEIGHT / dataGroupClone.length;
+    lSpace = HEIGHT / dataGroup.length;
 
     function tipMouseover(d, i) {
       tooltip
