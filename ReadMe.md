@@ -8,7 +8,7 @@ Last updated: April 8 2019
 This is where the sheet data is structured and the graph is generated and drawn. The data is saved to sheetData using the getData function and is parsed with the Cycle class (see Cycle.js), then the data is displayed using the drawGraph function.
 
 ### Functions
-- anonymous ready function: binds the data getter followed by drawGraph function to the Draw button
+- on load, the program binds the data getter followed by drawGraph function to the Draw button
 - drawGraph: selects which graph type to draw based on the chartType selection. The functions for each type of graph are found in their respective files.
 
 # How to use (Visual Studio Code):
@@ -24,3 +24,5 @@ This is where the sheet data is structured and the graph is generated and drawn.
     Note: We have restricted certain data for some chart types because they are only compatible with certain charts.
 
  ## If you have not made any changes to the data, you should be able      to see graphs plotting data from the Winter 2019 interns.
+
+ 
